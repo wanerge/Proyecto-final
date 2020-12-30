@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Imagenes/portada.jpg</file>
+        <file>Imagenes/primer_mapa.png</file>
+        <file>Imagenes/soldado universal.png</file>
+    </qresource>
+</RCC>
