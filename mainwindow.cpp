@@ -122,23 +122,7 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
     }
 void MainWindow::reposaito()
 {
-//    person->pausa();
-//    if(* letra == 'A'){
-//        person->filas=120;
-//        person->columnas=240;
-//    }
-//    else if(*letra =='S'){
-//        person->filas=0;
-//        person->columnas=240;
-//    }
-//    else if(*letra =='D'){
-//        person->filas=180;
-//        person->columnas=240;
-//    }
-//    else if(*letra =='W'){
-//        person->filas=60;
-//        person->columnas=240;
-//    }
+
     keyPressEvent(cero);
     }
 MainWindow::~MainWindow()
