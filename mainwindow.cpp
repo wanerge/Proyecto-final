@@ -9,21 +9,22 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
 
+    mundo1 =new QGraphicsScene(this);
+    view = new QGraphicsView(this);
+    person = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
     mundo1->setSceneRect(0,0,4800,1250);
-
-    person = new personaje_principal(":/Imagenes/soldado universal.png",35,35,60,800);
-
     mundo1->setBackgroundBrush(QBrush(QImage(":/Imagenes/primer_mapa.png")));
 
     view->setScene(mundo1);
 
-    view->resize(1200,1000);
-
-    this->resize(1200,1000);
-
+    view->resize(1366,1000);
+    this->setMaximumSize(1366,768);
+    this->setMinimumSize(1366,768);
+    this->resize(1366,768);
+    this->showMaximized();
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff );
     mun_crash=new QVector <colisiones *>;
-
-    //person=new bolita(20,140,120);
 
     mundo1->addItem(person);
 
@@ -39,15 +40,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(timer1, &QTimer::timeout, this, &MainWindow::reposaito);
 
+
+    mun1_crash.push_back(new colisiones(20,20,-140,-115));mundo1->addItem(mun1_crash.back());
     cargar_datos("../MiguelSernaM-patch-1/info/colisiones2.txt",mun_crash,1);
 
 }
+
 void MainWindow::keyPressEvent(QKeyEvent *evento)
 {
 
-
     if(evento->key() == Qt::Key_A){
-
         person->ispush=true;
         *letra='A';
         person->filas=70;
@@ -63,14 +65,11 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
 
         view->centerOn(person->x(),person->y());
         }
-
-
     }
 
     else if(evento->key() == Qt::Key_D){
         person->ispush=true;
         *letra='D';
-
         person->filas=105;
         if(person->x() <4750){
             person->right();
@@ -83,8 +82,6 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
 
         view->centerOn(person->x(),person->y());
         }
-
-
     }
     else if(evento->key() == Qt::Key_W){
         person->ispush=true;
@@ -101,7 +98,6 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
 
         view->centerOn(person->x(),person->y());
         }
-
     }
 
     else if(evento->key() == Qt::Key_S){
@@ -120,19 +116,24 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
 
         view->centerOn(person->x(),person->y());
         }
-
-        }
+    }
     else if(evento->key()==Qt::Key_0){
         person->ispush=false;
     }
-    else{
+    else if(evento->key()==Qt::Key_Escape){
+        QWidget *wid = new QWidget;
+        interfaz_inicio *menu = new interfaz_inicio;
+        view->setScene(menu->getScene());
+        wid->setLayout(menu->getLay());
+        this->setCentralWidget(wid);
     }
-    }
+}
+
 void MainWindow::reposaito()
 {
-
     keyPressEvent(cero);
-    }
+}
+
 template<typename T>
 void MainWindow::cargar_datos(QString nombre_archivo, T *contenedor,int mundo)
 {
@@ -176,10 +177,8 @@ void MainWindow::cargar_datos(QString nombre_archivo, T *contenedor,int mundo)
         archivo.close();
     }
 }
+
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-
-

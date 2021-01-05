@@ -1,5 +1,6 @@
 #ifndef COLISIONES_H
 #define COLISIONES_H
+
 #include <QGraphicsItem>
 #include <QPainter>
 

@@ -9,16 +9,18 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    bolita.cpp \
+    button.cpp \
     colisiones.cpp \
+    interfaz_inicio.cpp \
     main.cpp \
     mainwindow.cpp \
     mapa.cpp \
     personaje_principal.cpp
 
 HEADERS += \
-    bolita.h \
+    button.h \
     colisiones.h \
+    interfaz_inicio.h \
     mainwindow.h \
     mapa.h \
     personaje_principal.h

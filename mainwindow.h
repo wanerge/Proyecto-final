@@ -1,5 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <QMainWindow>
@@ -11,6 +12,9 @@
 #include "personaje_principal.h"
 #include <QTimer>
 #include "colisiones.h"
+#include "interfaz_inicio.h"
+#include "button.h"
+#include <QWidget>
 #include <QTextStream>
 
 QT_BEGIN_NAMESPACE
@@ -35,9 +39,10 @@ public:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *inicio;
+    QGraphicsScene *mundo1;
+    QGraphicsView *view;
     QGraphicsScene *mundo1 =new QGraphicsScene(this);
     QGraphicsScene *mundo2 =new QGraphicsScene(this);
-    QGraphicsView *view = new QGraphicsView(this);
     QPixmap *imgportada;
     //bolita *person;
     int valor1=650,valor2=350;
