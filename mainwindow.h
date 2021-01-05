@@ -10,9 +10,8 @@
 #include <QKeyEvent>
 #include "personaje_principal.h"
 #include <QTimer>
-#include <stdlib.h>
 #include "colisiones.h"
-#include <vector>
+#include <QTextStream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,14 +26,17 @@ public:
 
     //Funcion de keypreesevent que detecta las teclas presionadas
     void keyPressEvent(QKeyEvent *evento);
-      QVector<colisiones *> mun1_crash;
-      QVector<colisiones *>mun2_crash;
+      QVector<colisiones *> *mun_crash;
+      template<typename T>
+      //leer datos de archivo
+      void cargar_datos(QString nombre_archivo, T *contenedor,int mundo);
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *inicio;
     QGraphicsScene *mundo1 =new QGraphicsScene(this);
+    QGraphicsScene *mundo2 =new QGraphicsScene(this);
     QGraphicsView *view = new QGraphicsView(this);
     QPixmap *imgportada;
     //bolita *person;
@@ -42,7 +44,7 @@ private:
 
     //se crea personaje principal
     personaje_principal *person;
-
+    int mundo=1;
     char *letra;
 
     //timer para reposaito
