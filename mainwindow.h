@@ -15,6 +15,7 @@
 #include "interfaz_inicio.h"
 #include "button.h"
 #include <QWidget>
+#include <QTextStream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,22 +30,26 @@ public:
 
     //Funcion de keypreesevent que detecta las teclas presionadas
     void keyPressEvent(QKeyEvent *evento);
-      QVector<colisiones *> mun1_crash;
-      QVector<colisiones *>mun2_crash;
+      QVector<colisiones *> *mun_crash;
+      template<typename T>
+      //leer datos de archivo
+      void cargar_datos(QString nombre_archivo, T *contenedor,int mundo);
     ~MainWindow();
 
 private:
-      Ui::MainWindow *ui;
-      QGraphicsScene *inicio;
+    Ui::MainWindow *ui;
+    QGraphicsScene *inicio;
     QGraphicsScene *mundo1;
     QGraphicsView *view;
+    QGraphicsScene *mundo1 =new QGraphicsScene(this);
+    QGraphicsScene *mundo2 =new QGraphicsScene(this);
     QPixmap *imgportada;
     //bolita *person;
     int valor1=650,valor2=350;
 
     //se crea personaje principal
     personaje_principal *person;
-
+    int mundo=1;
     char *letra;
 
     //timer para reposaito
