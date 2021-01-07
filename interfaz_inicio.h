@@ -3,6 +3,7 @@
 
 #include <QVBoxLayout>
 #include <QGraphicsScene>
+#include <QWidget>
 #include <QDebug>
 #include "button.h"
 
@@ -12,24 +13,27 @@ public:
     interfaz_inicio();
     ~interfaz_inicio();
 
+    QWidget *getWid() const;
     QGraphicsScene *getScene() const;
     QVBoxLayout *getLay() const;
+    Button *getBoton_Nueva() const;
+    Button *getBoton_Multijugador() const;
+    Button *getBoton_Cargar() const;
+    Button *getBoton_Eliminar() const;
+    Button *getBoton_Ayuda() const;
+    Button *getBoton_Salir() const;
 
 private:
+    QWidget *wid;
     QGraphicsScene *scene;
     QVBoxLayout *lay;
     Button *boton_Nueva;
+    Button *boton_Multijugador;
     Button *boton_Cargar;
     Button *boton_Eliminar;
     Button *boton_Ayuda;
     Button *boton_Salir;
 
-private slots:
-    void on_boton_Nueva_clicked();
-    void on_boton_Cargar_clicked();
-    void on_boton_Eliminar_clicked();
-    void on_boton_Ayuda_clicked();
-    void on_boton_Salir_clicked();
 };
 
 #endif // INTERFAZ_INICIO_H

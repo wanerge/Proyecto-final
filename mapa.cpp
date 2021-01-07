@@ -1,8 +1,11 @@
 #include "mapa.h"
 
-mapa::mapa()
+mapa::mapa(QString mundo_)
 {
-
+    contenedor = new QVector<colisiones *>;
+    mundo = new QGraphicsScene;
+    mundo->setSceneRect(0,0,4800,1250);
+    mundo->setBackgroundBrush(QBrush(QImage(mundo_)));
 }
 
 void mapa::carga_Datos(QString nombre_archivo)
@@ -45,4 +48,15 @@ void mapa::carga_Datos(QString nombre_archivo)
 QVector<colisiones *> *mapa::getContenedor() const
 {
     return contenedor;
+}
+
+QGraphicsScene *mapa::getMundo() const
+{
+    return mundo;
+}
+
+mapa::~mapa()
+{
+    delete mundo;
+    delete contenedor;
 }

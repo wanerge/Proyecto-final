@@ -9,10 +9,8 @@
 #include <QKeyEvent>
 #include <QWidget>
 #include "personaje_principal.h"
-#include "colisiones.h"
-#include "interfaz_inicio.h"
-#include "button.h"
 #include "mapa.h"
+#include "interfaz_inicio.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,27 +27,22 @@ public:
     //Funcion de keypreesevent que detecta las teclas presionadas
     void keyPressEvent(QKeyEvent *evento);
 
-//    template<typename T>
-//    //leer datos de archivo
-//    void cargar_datos(QString nombre_archivo, T *contenedor,int mundo);
+    void menu();
 
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene *inicio;
-    QGraphicsScene *mundo1;
-    QGraphicsView *view;
-    QGraphicsScene *mundo2 =new QGraphicsScene(this);
 
-    mapa *mundo_1;
+    QGraphicsView *view;
+    interfaz_inicio *inicio;
+    QGraphicsScene *ayuda;
+    mapa *escenario;
 
     //se crea personaje principal
     personaje_principal *person;
-    int mundo=1;
-    char *letra;
+    QString boton;
 
     //timer para reposaito
     QTimer *timer1;
-
 
     /*
     Creamos un Qkeyevent para poder saber si el jugador esta presionando
@@ -58,11 +51,17 @@ private:
     */
     QKeyEvent *cero=new QKeyEvent(QEvent::KeyPress,48,Qt::NoModifier);
 
-    QVector<colisiones *> *mun_crash;
-
 public slots:
     //reposaito invoca el qevent de tecla 0
     void reposaito();
+
+private slots:
+    void on_boton_Nueva_clicked();
+    void on_boton_Multi_clicked();
+    void on_boton_Cargar_clicked();
+    void on_boton_Eliminar_clicked();
+    void on_boton_Ayuda_clicked();
+    void on_boton_Salir_clicked();
 
 };
 
