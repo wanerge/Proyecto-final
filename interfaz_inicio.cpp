@@ -2,34 +2,30 @@
 
 interfaz_inicio::interfaz_inicio()
 {
+    wid = new QWidget;
     scene = new QGraphicsScene;
     lay = new QVBoxLayout;
-
-    scene->setSceneRect(0,0,1200,700);
-
     boton_Nueva = new Button("Nueva Partida");
+    boton_Multijugador = new Button("Multijugador");
     boton_Cargar = new Button("Cargar Partida");
     boton_Eliminar = new Button("Eliminar Partida");
     boton_Ayuda = new Button("Ayuda");
     boton_Salir = new Button("Salir");
 
+    scene->setSceneRect(0,0,1366,768);
+    scene->setBackgroundBrush(QBrush(QImage(":/Imagenes/portada.jpg")));
+    //scene->setBackgroundBrush(QBrush(QImage(":/Imagenes/ayuda.png")));
+
     lay->addWidget(boton_Nueva);
+    lay->addWidget(boton_Multijugador);
     lay->addWidget(boton_Cargar);
     lay->addWidget(boton_Eliminar);
     lay->addWidget(boton_Ayuda);
     lay->addWidget(boton_Salir);
 
-    boton_Nueva->setGeometry(1200, 50, boton_Nueva->width(), boton_Nueva->height());
-    boton_Cargar->setGeometry(1200, 100, boton_Cargar->width(), boton_Cargar->height());
-    boton_Eliminar->setGeometry(1200, 150, boton_Eliminar->width(), boton_Eliminar->height());
-    boton_Ayuda->setGeometry(1200, 200, boton_Ayuda->width(), boton_Ayuda->height());
-    boton_Salir->setGeometry(1200, 250, boton_Salir->width(), boton_Salir->height());
+    wid->setLayout(lay);
 
-    connect(boton_Nueva, &QPushButton::clicked , this, &interfaz_inicio::on_boton_Nueva_clicked);
-    connect(boton_Cargar, &QPushButton::clicked , this, &interfaz_inicio::on_boton_Cargar_clicked);
-    connect(boton_Eliminar, &QPushButton::clicked , this, &interfaz_inicio::on_boton_Eliminar_clicked);
-    connect(boton_Ayuda, &QPushButton::clicked , this, &interfaz_inicio::on_boton_Ayuda_clicked);
-    connect(boton_Salir, &QPushButton::clicked , this, &interfaz_inicio::on_boton_Salir_clicked);
+    lay->setAlignment(Qt::AlignmentFlag::AlignCenter);
 }
 
 QGraphicsScene *interfaz_inicio::getScene() const
@@ -42,32 +38,43 @@ QVBoxLayout *interfaz_inicio::getLay() const
     return lay;
 }
 
-void interfaz_inicio::on_boton_Nueva_clicked()
+Button *interfaz_inicio::getBoton_Nueva() const
 {
-    qDebug() << "nueva";
+    return boton_Nueva;
 }
 
-void interfaz_inicio::on_boton_Cargar_clicked()
+Button *interfaz_inicio::getBoton_Cargar() const
 {
-    qDebug() << "cargar";
+    return boton_Cargar;
 }
 
-void interfaz_inicio::on_boton_Eliminar_clicked()
+Button *interfaz_inicio::getBoton_Eliminar() const
 {
-    qDebug() << "eliminar";
+    return boton_Eliminar;
 }
 
-void interfaz_inicio::on_boton_Ayuda_clicked()
+Button *interfaz_inicio::getBoton_Ayuda() const
 {
-    qDebug() << "ayuda";
+    return boton_Ayuda;
 }
 
-void interfaz_inicio::on_boton_Salir_clicked()
+Button *interfaz_inicio::getBoton_Salir() const
 {
-    qDebug() << "salir";
+    return boton_Salir;
+}
+
+Button *interfaz_inicio::getBoton_Multijugador() const
+{
+    return boton_Multijugador;
+}
+
+QWidget *interfaz_inicio::getWid() const
+{
+    return wid;
 }
 
 interfaz_inicio::~interfaz_inicio()
 {
-
+    delete wid;
+    delete scene;
 }

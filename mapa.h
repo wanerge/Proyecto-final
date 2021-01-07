@@ -4,17 +4,22 @@
 #include <QString>
 #include <QFile>
 #include <QTextStream>
+#include <QGraphicsScene>
 #include "colisiones.h"
 
 class mapa
 {
 public:
-    mapa();
+    mapa(QString mundo_);
+    ~mapa();
     void carga_Datos(QString nombre_archivo);
+
     QVector<colisiones *> *getContenedor() const;
+    QGraphicsScene *getMundo() const;
 
 private:
-    QVector<colisiones *> *contenedor = new QVector<colisiones *>;
+    QGraphicsScene *mundo;
+    QVector<colisiones *> *contenedor;
 };
 
 #endif // MAPA_H
