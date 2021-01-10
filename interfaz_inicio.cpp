@@ -14,7 +14,6 @@ interfaz_inicio::interfaz_inicio()
 
     scene->setSceneRect(0,0,1366,768);
     scene->setBackgroundBrush(QBrush(QImage(":/Imagenes/portada.jpg")));
-    //scene->setBackgroundBrush(QBrush(QImage(":/Imagenes/ayuda.png")));
 
     lay->addWidget(boton_Nueva);
     lay->addWidget(boton_Multijugador);

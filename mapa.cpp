@@ -4,7 +4,7 @@ mapa::mapa(QString mundo_)
 {
     contenedor = new QVector<colisiones *>;
     mundo = new QGraphicsScene;
-    mundo->setSceneRect(0,0,4800,1250);
+    mundo->setSceneRect(0,0,4800,1230);
     mundo->setBackgroundBrush(QBrush(QImage(mundo_)));
 }
 
@@ -42,6 +42,9 @@ void mapa::carga_Datos(QString nombre_archivo)
             contenedor->push_back(rec);
         }
         archivo.close();
+    }
+    for (auto it : *contenedor){
+        mundo->addItem(it);
     }
 }
 

@@ -6,6 +6,7 @@
 #include <QTextStream>
 #include <QGraphicsScene>
 #include "colisiones.h"
+#include "bullets.h"
 
 class mapa
 {
