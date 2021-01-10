@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>Imagenes/primer_mapa.png</file>
-        <file>Imagenes/soldado universal.png</file>
-        <file>Imagenes/portada.jpg</file>
-        <file>Imagenes/portada2.jpg</file>
-        <file>Imagenes/ayuda.png</file>
-    </qresource>
-</RCC>

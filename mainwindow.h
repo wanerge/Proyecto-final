@@ -8,9 +8,13 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QWidget>
+#include <QProgressBar>
 #include "personaje_principal.h"
 #include "mapa.h"
 #include "interfaz_inicio.h"
+#include "bullets.h"
+#include "colisiones.h"
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,7 +30,16 @@ public:
 
     //Funcion de keypreesevent que detecta las teclas presionadas
     void keyPressEvent(QKeyEvent *evento);
+    void keyReleaseEvent(QKeyEvent *evento);
 
+    //funciones para el movimiento del personaje
+    void actualizar();
+    void colision_up();
+    void colision_down();
+    void colision_left();
+    void colision_right();
+
+    //carga el menu principal
     void menu();
 
 private:
@@ -39,21 +52,16 @@ private:
 
     //se crea personaje principal
     personaje_principal *person;
+    QProgressBar *barra_personaje;
     QString boton;
+    char letra1;
+    char letra2;
 
-    //timer para reposaito
     QTimer *timer1;
-
-    /*
-    Creamos un Qkeyevent para poder saber si el jugador esta presionando
-    un boton y asi detener las animaciones del sprite en caso de que no se
-    oprima nada
-    */
-    QKeyEvent *cero=new QKeyEvent(QEvent::KeyPress,48,Qt::NoModifier);
 
 public slots:
     //reposaito invoca el qevent de tecla 0
-    void reposaito();
+    void movimiento_personaje();
 
 private slots:
     void on_boton_Nueva_clicked();
