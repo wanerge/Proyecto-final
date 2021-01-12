@@ -9,11 +9,15 @@
 #include <QKeyEvent>
 #include <QWidget>
 #include <QProgressBar>
+#include <math.h>
+#include <QFileDialog>
+#include <QMessageBox>
 #include "personaje_principal.h"
 #include "mapa.h"
 #include "interfaz_inicio.h"
 #include "bullets.h"
 #include "colisiones.h"
+#include "life.h"
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -32,6 +36,9 @@ public:
     void keyPressEvent(QKeyEvent *evento);
     void keyReleaseEvent(QKeyEvent *evento);
 
+    //funciones para el movimiento del disparo
+    void direccion_disparo();
+
     //funciones para el movimiento del personaje
     void actualizar();
     void colision_up();
@@ -49,11 +56,13 @@ private:
     interfaz_inicio *inicio;
     QGraphicsScene *ayuda;
     mapa *escenario;
+    QString estado;
 
     //se crea personaje principal
     personaje_principal *person;
     QProgressBar *barra_personaje;
-    QString boton;
+    life *vidas;
+    bullets *bullet;
     char letra1;
     char letra2;
 

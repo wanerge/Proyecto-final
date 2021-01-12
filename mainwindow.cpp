@@ -34,7 +34,6 @@ void MainWindow::menu()
 
     view->setAlignment(Qt::AlignmentFlag::AlignTop);
     view->setScene(inicio->getScene());
-
     this->setCentralWidget(inicio->getWid());
 
     connect(inicio->getBoton_Nueva(), &QPushButton::clicked , this, &MainWindow::on_boton_Nueva_clicked);
@@ -47,7 +46,7 @@ void MainWindow::menu()
 
 void MainWindow::keyPressEvent(QKeyEvent *evento)
 {
-    if (boton == "new") {
+    if (estado == "new") {
         if(evento->key() == Qt::Key_A){
             if(!evento->isAutoRepeat()){
                 letra2 = letra1;
@@ -74,41 +73,36 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
         }
         else if ((evento->key() == Qt::Key_Space) && (!evento->isAutoRepeat())) {
             //barra_personaje->setValue(barra_personaje->value()-10);
-            bullets *bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 50, 50, 3);
-            if ((letra1 == 'A') || (letra2 == 'a')) {
-                bullet->filas = 100;
-            }
-            else if ((letra1 == 'D') || (letra2 == 'd')) {
-                bullet->filas = 0;
-            }
-            else if ((letra1 == 'W') || (letra2 == 'w')) {
-                bullet->filas = 50;
-            }
-            else if ((letra1 == 'S') || (letra2 == 's')) {
-                bullet->filas = 150;
-            }
+            bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3);
+            direccion_disparo();
             escenario->getMundo()->addItem(bullet);
-            bullet->setPos(person->x(), person->y());
+            timer1->stop();
+            person->ispush = true;
+            person->columnas = person->ancho*4;
+            person->max_columnas = 7;
         }
     }
     if(evento->key()==Qt::Key_Escape){
-        if (boton == "new") {
+        if (estado == "new") {
+            view->resetTransform();
             delete timer1;
+            delete vidas;
             delete person;
             delete barra_personaje;
             delete escenario;       
         }
-        else if(boton == "help"){
+        else if(estado == "help"){
             delete ayuda;
         }
-        boton = "esc";
+
+        estado = "esc";
         menu();
     }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *evento)
 {
-    if (boton == "new") {
+    if (estado == "new") {
         if(evento->key() == Qt::Key_A && !evento->isAutoRepeat()){
             if (letra1 == 'A') {
                 letra1 = letra2;
@@ -149,51 +143,126 @@ void MainWindow::keyReleaseEvent(QKeyEvent *evento)
             }
             person->ispush=false;
         }
+        else if ((evento->key() == Qt::Key_Space) && (!evento->isAutoRepeat())) {
+            timer1->start();
+        }
+    }
+}
+
+void MainWindow::direccion_disparo()
+{
+    if ((letra1 == 'W' && letra2 == 'A') || (letra2 == 'W' && letra1 == 'A')) {
+        bullet->setPos(person->x()+12, person->y()-7);
+        bullet->filas = 40;
+        bullet->setRotation(45);
+        bullet->diagonal = true;
+        bullet->velocidad = sqrt(pow(bullet->velocidad,2)/2);
+    }
+    else if ((letra1 == 'W' && letra2 == 'D') || (letra2 == 'W' && letra1 == 'D')) {
+        bullet->setPos(person->x()+51, person->y()-7);
+        bullet->filas = 20;
+        bullet->setRotation(45);
+        bullet->diagonal = true;
+        bullet->velocidad = sqrt(pow(bullet->velocidad,2)/2);
+    }
+    else if ((letra1 == 'S' && letra2 == 'A') || (letra2 == 'S' && letra1 == 'A')) {
+        bullet->setPos(person->x()+12, person->y()+18);
+        bullet->filas = 60;
+        bullet->setRotation(45);
+        bullet->diagonal = true;
+        bullet->velocidad = sqrt(pow(bullet->velocidad,2)/2);
+    }
+    else if ((letra1 == 'S' && letra2 == 'D') || (letra2 == 'S' && letra1 == 'D')) {
+        bullet->setPos(person->x()+51, person->y()+18);
+        bullet->filas = 0;
+        bullet->setRotation(45);
+        bullet->diagonal = true;
+        bullet->velocidad = sqrt(pow(bullet->velocidad,2)/2);
+    }
+    else if (letra1 == 'A' || letra2 == 'A') {
+        bullet->setPos(person->x(), person->y()+12);
+        bullet->filas = 40;
+    }
+    else if (letra1 == 'D' || letra2 == 'D') {
+        bullet->setPos(person->x()+35, person->y()+12);
+        bullet->filas = 0;
+    }
+    else if (letra1 == 'W' || letra2 == 'W') {
+        bullet->setPos(person->x()+17, person->y()-5);
+        bullet->filas = 20;
+    }
+    else if (letra1 == 'S' || letra2 == 'S') {
+        bullet->setPos(person->x()+12, person->y()+35);
+        bullet->filas = 60;
+    }
+    else if (letra2 == 'a') {
+        bullet->setPos(person->x(), person->y()+12);
+        bullet->filas = 40;
+    }
+    else if (letra2 == 'd') {
+        bullet->setPos(person->x()+35, person->y()+12);
+        bullet->filas = 0;
+    }
+    else if (letra2 == 'w') {
+        bullet->setPos(person->x()+17, person->y()-5);
+        bullet->filas = 20;
+    }
+    else if (letra2 == 's') {
+        bullet->setPos(person->x()+12, person->y()+35);
+        bullet->filas = 60;
     }
 }
 
 void MainWindow::movimiento_personaje()
 {
     if ((letra1 == 'W' && letra2 == 'A') || (letra2 == 'W' && letra1 == 'A')) {
+        person->velocidad = sqrt(pow(6 ,2)/2);
         colision_up();
         actualizar();
         colision_left();
         actualizar();
     }
     else if ((letra1 == 'W' && letra2 == 'D') || (letra2 == 'W' && letra1 == 'D')) {
+        person->velocidad = sqrt(pow(6, 2)/2);
         colision_up();
         actualizar();
         colision_right();
         actualizar();
     }
     else if ((letra1 == 'S' && letra2 == 'A') || (letra2 == 'S' && letra1 == 'A')) {
+        person->velocidad = sqrt(pow(6, 2)/2);
         colision_down();
         actualizar();
         colision_left();
         actualizar();
     }
     else if ((letra1 == 'S' && letra2 == 'D') || (letra2 == 'S' && letra1 == 'D')) {
+        person->velocidad = sqrt(pow(6, 2)/2);
         colision_down();
         actualizar();
         colision_right();
         actualizar();
     }
     else if (letra1 == 'A' || letra2 == 'A') {
+        person->velocidad = 6;
         person->filas = 70;
         colision_left();
         actualizar();
     }
     else if (letra1 == 'D' || letra2 == 'D') {
+        person->velocidad = 6;
         person->filas = 105;
         colision_right();
         actualizar();
     }
     else if (letra1 == 'W' || letra2 == 'W') {
+        person->velocidad = 6;
         person->filas = 35;
         colision_up();
         actualizar();
     }
     else if (letra1 == 'S' || letra2 == 'S') {
+        person->velocidad = 6;
         person->filas = 0;
         colision_down();
         actualizar();
@@ -253,14 +322,17 @@ void MainWindow::on_boton_Nueva_clicked()
     timer1 = new QTimer;
     person = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
     barra_personaje = new QProgressBar;
+    vidas = new life(this, 3, 100);
     escenario = new mapa(":/Imagenes/primer_mapa.png");
 
     escenario->carga_Datos(":/info/colisiones1.txt");
 
+    view->scale(1.7,1.4);
     view->setScene(escenario->getMundo());
     escenario->getMundo()->addItem(person);
-    view->centerOn(person->x(),person->y());
     escenario->getMundo()->addWidget(barra_personaje);
+
+    view->centerOn(person->x(),person->y());
 
     barra_personaje->setMinimum(0);
     barra_personaje->setMaximum(1000);
@@ -273,7 +345,7 @@ void MainWindow::on_boton_Nueva_clicked()
 
     connect(timer1, &QTimer::timeout, this, &MainWindow::movimiento_personaje);
 
-    boton = "new";
+    estado = "new";
 }
 
 void MainWindow::on_boton_Multi_clicked()
@@ -283,12 +355,42 @@ void MainWindow::on_boton_Multi_clicked()
 
 void MainWindow::on_boton_Cargar_clicked()
 {
-    close();
+    QFile arch;
+    QTextStream io;
+    QString nombreArch, extension;
+    nombreArch = QFileDialog::getOpenFileName(this, "Abrir");
+    if (!nombreArch.isEmpty()) {
+        for (int i = (nombreArch.length()-1); i > (nombreArch.length()-6)  ; i-- ) {
+            extension.push_front(nombreArch[i]);
+        }
+        if (extension == ".hell") {
+            arch.setFileName(nombreArch);
+            arch.open(QIODevice::ReadOnly | QIODevice::Text);
+            io.setDevice(&arch);
+        }
+        else {
+            QMessageBox::critical(this, "Error", arch.errorString());
+        }
+        arch.flush();
+        arch.close();
+    }
 }
 
 void MainWindow::on_boton_Eliminar_clicked()
 {
-    close();
+    QFile arch;
+    QString nombreArch, extension;
+    nombreArch = QFileDialog::getOpenFileName(this, "Abrir");
+    if (!nombreArch.isEmpty()) {
+        arch.setFileName(nombreArch);
+        for (int i = (nombreArch.length()-1); i > (nombreArch.length()-6)  ; i-- ) {
+            extension.push_front(nombreArch[i]);
+        }
+        if (extension == ".hell") {
+            arch.remove();
+        }
+        arch.close();
+    }
 }
 
 void MainWindow::on_boton_Ayuda_clicked()
@@ -299,7 +401,7 @@ void MainWindow::on_boton_Ayuda_clicked()
     ayuda->setBackgroundBrush(QBrush(QImage(":/Imagenes/ayuda.png")));
     view->setScene(ayuda);
 
-    boton = "help";
+    estado = "help";
 }
 
 void MainWindow::on_boton_Salir_clicked()

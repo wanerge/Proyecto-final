@@ -15,5 +15,6 @@
         <file>Imagenes/disparos/roca.png</file>
         <file>Imagenes/disparos/taladro.png</file>
         <file>Imagenes/disparos/disparos_varios.png</file>
+        <file>Imagenes/corazon.png</file>
     </qresource>
 </RCC>
