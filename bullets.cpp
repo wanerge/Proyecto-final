@@ -16,21 +16,41 @@ bullets::bullets(QString direccion_img, float ancho_, float alto_, float total_c
 
 void bullets::Actualizacion()
 {
-    if (filas == 100) {
-        left();
+    if (diagonal) {
+        if (filas == 40) {
+            up();
+            left();
+        }
+        else if (filas == 20) {
+            up();
+            right();
+        }
+        else if (filas == 60) {
+            down();
+            left();
+        }
+        else if (filas == 0) {
+            down();
+            right();
+        }
     }
-    else if (filas == 0) {
-        right();
-    }
-    else if (filas == 50) {
-        up();
-    }
-    else if (filas == 150) {
-        down();
+    else{
+        if (filas == 40) {
+            left();
+        }
+        else if (filas == 0) {
+            right();
+        }
+        else if (filas == 20) {
+            up();
+        }
+        else if (filas == 60) {
+            down();
+        }
     }
     distancia_max -= 20;
     if (distancia_max == 100) {
-        filas = 200;
+        filas = 80;
     }
     else if (distancia_max <= 0) {
         scene()->removeItem(this);

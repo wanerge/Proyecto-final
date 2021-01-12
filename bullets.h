@@ -25,8 +25,10 @@ public:
     void left();
     void right();
 
-    int velocidad = 20, distancia_max = 400;
+    float velocidad = 20, distancia_max = 400;
     float filas = 0, columnas = 0, total_columnas;
+
+    bool diagonal=false;
 
 private:
     QPixmap *img;

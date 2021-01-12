@@ -18,13 +18,11 @@ public:
     QTimer *timer;
 
     //variable que me dice si estan precionando una tecla
-    bool ispush;
+    bool ispush = false;
 
-    //Velocidad del personaje
-    int velocidad = 6;
-    int vida = 1000;
+    int vida = 1000, max_columnas = 4;
 
-    float filas, columnas;
+    float velocidad = 6, filas, columnas;
     float ancho, alto;
 
     //funcion movimiento ascendente personaje

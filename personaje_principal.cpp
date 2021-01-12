@@ -23,12 +23,16 @@ void personaje_principal::Actualizacion()
 {
     if(ispush){
         columnas += ancho;
-        if (columnas >= (ancho*4)){
+        if (columnas >= (ancho*max_columnas)){
             columnas = 0;
+        }
+        if (columnas >= 210) {
+            max_columnas = 4;
+            ispush = false;
+            columnas = (ancho*4);
         }
     }
     this->update(ancho/2, alto/2, ancho, alto);
-
 }
 
 QRectF personaje_principal::boundingRect() const
