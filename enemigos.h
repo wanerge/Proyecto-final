@@ -11,7 +11,7 @@ class enemigos : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit enemigos(QString direccion_img, float ancho_, float alto_, float total_columnas_, QObject *parent = nullptr);
+    explicit enemigos(QString direccion_img, float ancho_, float alto_, float total_columnas_,float posx, float posy, QObject *parent = nullptr);
     ~enemigos();
 
     QRectF boundingRect() const;
@@ -21,14 +21,16 @@ public:
     void down();
     void left();
     void right();
+    void seguir(float playerx_,float playery_);
 
-    int velocidad = 2;
+    float velocidad = 5;
     float filas = 0, columnas = 0, total_columnas;
-
+    int vida;
 private:
     QPixmap *img;
     QTimer *timer;
     float ancho, alto;
+    float playerx,playery;
 
 signals:
 
