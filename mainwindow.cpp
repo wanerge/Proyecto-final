@@ -89,7 +89,7 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
             delete vidas;
             delete person;
             delete barra_personaje;
-            delete escenario;       
+            delete escenario;
         }
         else if(estado == "help"){
             delete ayuda;
@@ -142,6 +142,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *evento)
                 letra2 = 's';
             }
             person->ispush=false;
+
         }
         else if ((evento->key() == Qt::Key_Space) && (!evento->isAutoRepeat())) {
             timer1->start();
@@ -267,6 +268,11 @@ void MainWindow::movimiento_personaje()
         colision_down();
         actualizar();
     }
+    cucarron->seguir(person->x(),person->y());
+    colision_spawn();
+    for(auto it:*lista_enemigos){
+        it->seguir(person->x(),person->y());
+    }
 }
 
 void MainWindow::actualizar()
@@ -315,24 +321,51 @@ void MainWindow::colision_right()
     }
 }
 
+void MainWindow::colision_spawn()
+{
+
+    for (int i = 0;i < escenario->getZonaspawn()->size();i++) {
+        lista_enemigos2->clear();
+        if(person->collidesWithItem(escenario->getZonaspawn()->at(i))){
+
+            escenario->getInvocacion()->insert(escenario->getInvocacion()->begin()+i,0);
+            *lista_enemigos2 = Spawner->zona_activa(i);
+
+            for(auto it : *lista_enemigos2){
+                lista_enemigos->push_back(it);
+                escenario->getMundo()->addItem(it);
+            }
+
+
+
+        }
+    }
+}
+
 void MainWindow::on_boton_Nueva_clicked()
 {
     delete inicio;
 
     timer1 = new QTimer;
     person = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
+    cucarron = new enemigos(":/Imagenes/Enemigos/1Cucarron.png",32,32,3,130,300);
     barra_personaje = new QProgressBar;
     vidas = new life(this, 3, 100);
     escenario = new mapa(":/Imagenes/primer_mapa.png");
 
-    escenario->carga_Datos(":/info/colisiones1.txt");
-
     view->scale(1.7,1.4);
+
+    Spawner=new spawn();
+    Spawner->carga_Datos(":/info/enemy_info.txt");
+    lista_enemigos = new QList<enemigos*>;
+    lista_enemigos2 = new QList<enemigos *>;
+    escenario->carga_Datos(":/info/colisiones1.txt","colisiones");
+    escenario->carga_Datos(":/info/zonas_spawn.txt","spawners");
     view->setScene(escenario->getMundo());
     escenario->getMundo()->addItem(person);
-    escenario->getMundo()->addWidget(barra_personaje);
-
+    escenario->getMundo()->addItem(cucarron);
     view->centerOn(person->x(),person->y());
+    escenario->getMundo()->addWidget(barra_personaje);
 
     barra_personaje->setMinimum(0);
     barra_personaje->setMaximum(1000);

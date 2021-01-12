@@ -18,6 +18,8 @@
 #include "bullets.h"
 #include "colisiones.h"
 #include "life.h"
+#include "enemigos.h"
+#include "spawn.h"
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -45,6 +47,7 @@ public:
     void colision_down();
     void colision_left();
     void colision_right();
+    void colision_spawn();
 
     //carga el menu principal
     void menu();
@@ -60,13 +63,18 @@ private:
 
     //se crea personaje principal
     personaje_principal *person;
+    enemigos *cucarron;
     QProgressBar *barra_personaje;
     life *vidas;
     bullets *bullet;
     char letra1;
     char letra2;
-
+    //Spawn de enemigos
+    spawn *Spawner;
     QTimer *timer1;
+    QList<enemigos *> *lista_enemigos;
+    QList<enemigos *> *lista_enemigos2;
+
 
 public slots:
     //reposaito invoca el qevent de tecla 0

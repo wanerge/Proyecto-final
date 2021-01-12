@@ -19,7 +19,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mapa.cpp \
-    personaje_principal.cpp
+    personaje_principal.cpp \
+    spawn.cpp
 
 HEADERS += \
     bullets.h \
@@ -30,7 +31,8 @@ HEADERS += \
     life.h \
     mainwindow.h \
     mapa.h \
-    personaje_principal.h
+    personaje_principal.h \
+    spawn.h
 
 FORMS += \
     mainwindow.ui

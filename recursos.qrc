@@ -16,5 +16,9 @@
         <file>Imagenes/disparos/taladro.png</file>
         <file>Imagenes/disparos/disparos_varios.png</file>
         <file>Imagenes/corazon.png</file>
+        <file>Imagenes/Enemigos/1Cucarron.png</file>
+        <file>Imagenes/Enemigos/1Escarabajo.png</file>
+        <file>info/enemy_info.txt</file>
+        <file>info/zonas_spawn.txt</file>
     </qresource>
 </RCC>
