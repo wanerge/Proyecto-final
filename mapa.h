@@ -26,7 +26,6 @@ public:
     ~mapa();
 
 private:
-    spawn *myspwan;
     QGraphicsScene *mundo;
     QVector<colisiones *> *contenedor;
     QVector<colisiones *> *zonaspawn;
