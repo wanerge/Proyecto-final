@@ -12,15 +12,25 @@ class mapa
 {
 public:
     mapa(QString mundo_);
-    ~mapa();
-    void carga_Datos(QString nombre_archivo);
+
+    void carga_Datos(QString nombre_archivo,QString contenedor);
 
     QVector<colisiones *> *getContenedor() const;
+
     QGraphicsScene *getMundo() const;
 
+    QVector<colisiones *> *getZonaspawn() const;
+
+    QVector<int *> *getInvocacion() const;
+
+    ~mapa();
+
 private:
+    spawn *myspwan;
     QGraphicsScene *mundo;
     QVector<colisiones *> *contenedor;
+    QVector<colisiones *> *zonaspawn;
+    QVector<int *> *invocacion;
 };
 
 #endif // MAPA_H
