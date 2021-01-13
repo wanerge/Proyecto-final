@@ -2,17 +2,16 @@
 
 spawn::spawn(QObject *parent) : QObject(parent)
 {
-    //  carga_Datos(":/info/enemy_info.txt");
-    infoenemy = new QMap<QString,QVector<float>>;
-    identidades = new QList<enemigos *>;
+    //carga_Datos(":/info/enemy_info.txt");
+    infoenemy = new QMap<QString, float *>;
+    Enemigos = new QList<enemigos *>;
 }
+
 void spawn::carga_Datos(QString nombre_archivo)
 {
+    int num_datos;
     QString linea1, linea2;
-    QString *aux;
-    aux=new QString;
-    QVector<float> *datos;
-    datos=new QVector<float>;
+    QString aux;
     QFile archivo(nombre_archivo);
     if (archivo.open(QIODevice::ReadOnly)) {
         QTextStream in(&archivo);
@@ -20,85 +19,58 @@ void spawn::carga_Datos(QString nombre_archivo)
         {
             linea1 = in.readLine();
             linea2 = "";
-            for (int i = 0, j = 0 ; i < linea1.length(); i++) {
+            num_datos = linea1.count(' ');
+            datos = new float[num_datos];
+            for (int i = 0, j = 1, k = 0; i < linea1.length(); i++) {
                 if(linea1[i] == ' '){
-                    j++;
                     switch (j) {
-                    case 1:{
-                        *aux=linea2;
-                        break;}
-                    case 2:{
-                        datos->push_back( linea2.toFloat());
-                        break;}
-                    case 3:{
-                        datos->push_back( linea2.toFloat());
-                        break;}
-                    case 4:{
-                        datos->push_back( linea2.toFloat());
+                    case 1:
+                        aux = linea2;
+                        j++;
                         break;
-                    }
-
-
+                    case 2:
+                        datos[k] = linea2.toFloat();
+                        k++;
+                        break;
                     }
                     linea2 = "";
                 }
                 else linea2.push_back(linea1[i]);
             }
-            datos->push_back( linea2.toFloat());
-            infoenemy->insert(*aux,*datos);
-            datos->clear();
-
+            datos[num_datos-1] = linea2.toFloat();
+            infoenemy->insert(aux, datos);
+            numero_datos.push_back(num_datos);
         }
         archivo.close();
     }
 }
 
-void spawn::leerdatos()
+void spawn::generador(QString mob, QString imagsource)
 {
-    QMap<QString, QVector<float>>::const_iterator i = infoenemy->constBegin();
-    while (i != infoenemy->end()) {
-        qDebug() << i.key() << ": " << i.value();
-        ++i;
+    Enemigos = new QList<enemigos *>;
+    QMap<QString, float *>::iterator i = infoenemy->find(mob);
+    for (int num_enemigo = 0, indice_dato = 4; num_enemigo < i.value()[3] ; num_enemigo++, indice_dato+=2) {
+        Enemigos->push_back(new enemigos(imagsource,i.value()[0], i.value()[1],i.value()[2],i.value()[indice_dato],i.value()[indice_dato+1]));
     }
+    i.value()[3] = 0;
 }
 
-QList<enemigos*> spawn::generador(QString mob,QString imagsource)
+void spawn::zona_activa(int i)
 {
-    QList<enemigos*> *spawners;
-    spawners=new QList<enemigos*>;
-    QMap<QString, QVector<float>>::const_iterator i = infoenemy->constBegin();
-    infoenemy->value("Cucarron").value(3);
-    float *posiciones=0,*datatxt=0;
-    posiciones= new float,datatxt=new float;
-    while (i != infoenemy->end()) {
-
-        if(mob == "Cucarron"){
-
-            posiciones[0]=150,posiciones[1]=450,posiciones[2]=300,posiciones[3]=350,posiciones[4]=700,posiciones[5]=300,posiciones[6]=360,posiciones[7]=270,posiciones[8]=500,posiciones[9]=320,posiciones[10]=800;
-            datatxt[0]=i.value()[0],datatxt[1]=i.value()[1],datatxt[2]=i.value()[2];
-
-            for(int mobs = 0,pos=0;mobs <i.value()[3] ;mobs++,pos+=2){
-
-                spawners->push_back(new enemigos(imagsource,datatxt[0],datatxt[1],datatxt[2],posiciones[pos],posiciones[pos+1]));
-            }
-            QMap<QString, QVector<float>>::iterator it = infoenemy->find("Cucarron");
-            if (it != infoenemy->end())
-                it.value()[3] = {0};
-
-            break;
-        }
-
-    }
-    return *spawners;
-}
-
-QList<enemigos *> spawn::zona_activa(int i)
-{
+    delete Enemigos;
     if(i == 0){
-        *identidades = generador("Cucarron",":/Imagenes/Enemigos/1Cucarron.png");
+        generador("Cucarron",":/Imagenes/Enemigos/mundo1/1Cucarron.png");
     }
-
-    return *identidades;
 }
 
+QList<enemigos *> *spawn::getEnemigos() const
+{
+    return Enemigos;
+}
+
+spawn::~spawn()
+{
+    delete Enemigos;
+    delete infoenemy;
+}
 

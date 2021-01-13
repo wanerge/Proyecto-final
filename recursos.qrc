@@ -16,9 +16,19 @@
         <file>Imagenes/disparos/taladro.png</file>
         <file>Imagenes/disparos/disparos_varios.png</file>
         <file>Imagenes/corazon.png</file>
-        <file>Imagenes/Enemigos/1Cucarron.png</file>
-        <file>Imagenes/Enemigos/1Escarabajo.png</file>
         <file>info/enemy_info.txt</file>
         <file>info/zonas_spawn.txt</file>
+        <file>Imagenes/Enemigos/mundo1/1araña.png</file>
+        <file>Imagenes/Enemigos/mundo1/1Cien_pies.png</file>
+        <file>Imagenes/Enemigos/mundo1/1Cucarron.png</file>
+        <file>Imagenes/Enemigos/mundo1/1Escarabajo.png</file>
+        <file>Imagenes/Enemigos/mundo1/1Golem.png</file>
+        <file>Imagenes/Enemigos/mundo1/2Cocodrilo.png</file>
+        <file>Imagenes/Enemigos/mundo1/2motosierra.png</file>
+        <file>Imagenes/Enemigos/mundo1/2planta_carnivora.png</file>
+        <file>Imagenes/Enemigos/mundo1/3Drago_gusano.png</file>
+        <file>Imagenes/Enemigos/mundo1/3Dragon_agua.png</file>
+        <file>Imagenes/Enemigos/mundo1/4mini_cangrejo.png</file>
+        <file>Imagenes/Enemigos/mundo1/4Urgot.png</file>
     </qresource>
 </RCC>

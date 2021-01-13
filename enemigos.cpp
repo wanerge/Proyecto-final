@@ -10,8 +10,6 @@ enemigos::enemigos(QString direccion_img, float ancho_, float alto_, float total
     timer->start(60);
     connect(timer, &QTimer::timeout, this, &enemigos::Actualizacion);
     setPos(posx,posy);
-
-
 }
 
 void enemigos::Actualizacion()
@@ -74,8 +72,8 @@ void enemigos::right()
 
 void enemigos::seguir(float playerx_, float playery_)
 {
-    playerx=playerx_;
-    playery=playery_;
+    playerx = playerx_;
+    playery = playery_;
 }
 
 enemigos::~enemigos()

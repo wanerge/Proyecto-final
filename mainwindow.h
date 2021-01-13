@@ -18,7 +18,6 @@
 #include "bullets.h"
 #include "colisiones.h"
 #include "life.h"
-#include "enemigos.h"
 #include "spawn.h"
 #include <QDebug>
 
@@ -63,18 +62,16 @@ private:
 
     //se crea personaje principal
     personaje_principal *person;
-    enemigos *cucarron;
     QProgressBar *barra_personaje;
     life *vidas;
     bullets *bullet;
     char letra1;
     char letra2;
+
     //Spawn de enemigos
     spawn *Spawner;
-    QTimer *timer1;
-    QList<enemigos *> *lista_enemigos;
-    QList<enemigos *> *lista_enemigos2;
 
+    QTimer *timer1;
 
 public slots:
     //reposaito invoca el qevent de tecla 0
