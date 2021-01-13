@@ -1,2 +1,2 @@
-Cucarron 32 32 3 5
-Escarabajo 64 64 3 10
+Cucarron 32 32 3 5 150 450 300 350 700 300 360 270 500 320
+Escarabajo 64 64 3 10 15 23

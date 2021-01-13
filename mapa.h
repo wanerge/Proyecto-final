@@ -6,7 +6,6 @@
 #include <QTextStream>
 #include <QGraphicsScene>
 #include "colisiones.h"
-#include "bullets.h"
 
 class mapa
 {
@@ -21,15 +20,12 @@ public:
 
     QVector<colisiones *> *getZonaspawn() const;
 
-    QVector<int *> *getInvocacion() const;
-
     ~mapa();
 
 private:
     QGraphicsScene *mundo;
     QVector<colisiones *> *contenedor;
     QVector<colisiones *> *zonaspawn;
-    QVector<int *> *invocacion;
 };
 
 #endif // MAPA_H
