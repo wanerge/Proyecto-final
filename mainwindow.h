@@ -8,7 +8,6 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QWidget>
-#include <QProgressBar>
 #include <math.h>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -38,15 +37,20 @@ public:
     void keyReleaseEvent(QKeyEvent *evento);
 
     //funciones para el movimiento del disparo
-    void direccion_disparo();
+    void direccion_disparo(personaje_principal *person);
 
     //funciones para el movimiento del personaje
-    void actualizar();
-    void colision_up();
-    void colision_down();
-    void colision_left();
-    void colision_right();
-    void colision_spawn();
+    void movimiento_personaje(personaje_principal *person);
+    void actualizar(personaje_principal *person);
+    void colision_up(personaje_principal *person);
+    void colision_down(personaje_principal *person);
+    void colision_left(personaje_principal *person);
+    void colision_right(personaje_principal *person);
+    void colision_spawn(personaje_principal *person);
+    void key_press(personaje_principal *person, QTimer *time, QKeyEvent *evento);
+    void key_release(personaje_principal *person, QTimer *time, QKeyEvent *evento);
+
+    bool personaje_pri, personaje_seg;
 
     //carga el menu principal
     void menu();
@@ -61,30 +65,28 @@ private:
     QString estado;
 
     //se crea personaje principal
-    personaje_principal *person;
-    QProgressBar *barra_personaje;
+    personaje_principal *personaje1, *personaje2;
     life *vidas;
     bullets *bullet;
-    char letra1;
-    char letra2;
 
     //Spawn de enemigos
     spawn *Spawner;
 
-    QTimer *timer1;
+    QTimer *timer1, *timer2;
 
 public slots:
     //reposaito invoca el qevent de tecla 0
-    void movimiento_personaje();
+    void personajes_activos();
 
 private slots:
     void on_boton_Nueva_clicked();
+    void on_boton_Facil_clicked();
+    void on_boton_Dificil_clicked();
     void on_boton_Multi_clicked();
     void on_boton_Cargar_clicked();
     void on_boton_Eliminar_clicked();
     void on_boton_Ayuda_clicked();
     void on_boton_Salir_clicked();
-
 };
 
 

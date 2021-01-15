@@ -46,56 +46,39 @@ void MainWindow::menu()
 
 void MainWindow::keyPressEvent(QKeyEvent *evento)
 {
-    if (estado == "new") {
-        if(evento->key() == Qt::Key_A){
-            if(!evento->isAutoRepeat()){
-                letra2 = letra1;
-                letra1 = 'A';
-            }
+    if (estado == "easy" || estado == "hard" || estado == "multi") {
+        if (personaje_pri) {
+            key_press(personaje1,timer1,evento);
         }
-        else if(evento->key() == Qt::Key_D){
-            if(!evento->isAutoRepeat()){
-                letra2 = letra1;
-                letra1 = 'D';
-            }
-        }
-        else if(evento->key() == Qt::Key_W){
-            if(!evento->isAutoRepeat()){
-                letra2 = letra1;
-                letra1 = 'W';
-            }
-        }
-        else if(evento->key() == Qt::Key_S){
-            if(!evento->isAutoRepeat()){
-                letra2 = letra1;
-                letra1 = 'S';
-            }
-        }
-        else if ((evento->key() == Qt::Key_Space) && (!evento->isAutoRepeat())) {
-            //barra_personaje->setValue(barra_personaje->value()-10);
-            bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3);
-            direccion_disparo();
-            escenario->getMundo()->addItem(bullet);
-            timer1->stop();
-            person->ispush = true;
-            person->columnas = person->ancho*4;
-            person->max_columnas = 7;
+        if (personaje_seg) {
+            key_press(personaje2,timer2,evento);
         }
     }
     if(evento->key()==Qt::Key_Escape){
         if (estado == "new") {
+            inicio->modo_menu();
+        }
+        else if (estado == "hard" || estado == "easy") {
             view->resetTransform();
             delete timer1;
             delete vidas;
-            delete person;
-            delete barra_personaje;
+            delete personaje1;
+            delete escenario;
+            delete Spawner;
+        }
+        else if (estado == "multi") {
+            view->resetTransform();
+            delete timer1;
+            delete timer2;
+            delete vidas;
+            delete personaje1;
+            delete personaje2;
             delete escenario;
             delete Spawner;
         }
         else if(estado == "help"){
             delete ayuda;
         }
-
         estado = "esc";
         menu();
     }
@@ -103,182 +86,324 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
 
 void MainWindow::keyReleaseEvent(QKeyEvent *evento)
 {
-    if (estado == "new") {
-        if(evento->key() == Qt::Key_A && !evento->isAutoRepeat()){
-            if (letra1 == 'A') {
-                letra1 = letra2;
-                letra2 = 'a';
-            }
-            else {
-                letra2 = 'a';
-            }
-            person->ispush=false;
+    if (estado == "easy" || estado == "hard" || estado == "multi") {
+        if (personaje_pri) {
+            key_release(personaje1, timer1, evento);
         }
-        else if(evento->key() == Qt::Key_D && !evento->isAutoRepeat()){
-            if (letra1 == 'D') {
-                letra1 = letra2;
-                letra2 = 'd';
-            }
-            else {
-                letra2 = 'd';
-            }
-            person->ispush=false;
-        }
-        else if(evento->key() == Qt::Key_W && !evento->isAutoRepeat()){
-            if (letra1 == 'W') {
-                letra1 = letra2;
-                letra2 = 'w';
-            }
-            else {
-                letra2 = 'w';
-            }
-            person->ispush=false;
-        }
-        else if(evento->key() == Qt::Key_S && !evento->isAutoRepeat()){
-            if (letra1 == 'S') {
-                letra1 = letra2;
-                letra2 = 's';
-            }
-            else {
-                letra2 = 's';
-            }
-            person->ispush=false;
-
-        }
-        else if ((evento->key() == Qt::Key_Space) && (!evento->isAutoRepeat())) {
-            timer1->start();
+        if (personaje_seg) {
+            key_release(personaje2, timer2, evento);
         }
     }
 }
 
-void MainWindow::direccion_disparo()
+void MainWindow::key_press(personaje_principal *person, QTimer *time, QKeyEvent *evento)
 {
-    if ((letra1 == 'W' && letra2 == 'A') || (letra2 == 'W' && letra1 == 'A')) {
+    if (person == personaje1) {
+        if(evento->key() == Qt::Key_A){
+            if(!evento->isAutoRepeat()){
+                person->letra2 = person->letra1;
+                person->letra1 = 'A';
+            }
+        }
+        else if(evento->key() == Qt::Key_D){
+            if(!evento->isAutoRepeat()){
+                person->letra2 = person->letra1;
+                person->letra1 = 'D';
+            }
+        }
+        else if(evento->key() == Qt::Key_W){
+            if(!evento->isAutoRepeat()){
+                person->letra2 = person->letra1;
+                person->letra1 = 'W';
+            }
+        }
+        else if(evento->key() == Qt::Key_S){
+            if(!evento->isAutoRepeat()){
+                person->letra2 = person->letra1;
+                person->letra1 = 'S';
+            }
+        }
+        else if ((evento->key() == Qt::Key_Space) && (!evento->isAutoRepeat())) {
+            bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getEnemigos());
+            direccion_disparo(person);
+            escenario->getMundo()->addItem(bullet);
+            time->stop();
+            person->ispush = true;
+            person->columnas = person->ancho*4;
+            person->max_columnas = 7;
+        }
+    }
+    else if (person == personaje2){
+        if(evento->key() == Qt::Key_J){
+            if(!evento->isAutoRepeat()){
+                person->letra2 = person->letra1;
+                person->letra1 = 'A';
+            }
+        }
+        else if(evento->key() == Qt::Key_L){
+            if(!evento->isAutoRepeat()){
+                person->letra2 = person->letra1;
+                person->letra1 = 'D';
+            }
+        }
+        else if(evento->key() == Qt::Key_I){
+            if(!evento->isAutoRepeat()){
+                person->letra2 = person->letra1;
+                person->letra1 = 'W';
+            }
+        }
+        else if(evento->key() == Qt::Key_K){
+            if(!evento->isAutoRepeat()){
+                person->letra2 = person->letra1;
+                person->letra1 = 'S';
+            }
+        }
+        else if ((evento->key() == Qt::Key_P) && (!evento->isAutoRepeat())) {
+            bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getEnemigos());
+            direccion_disparo(person);
+            escenario->getMundo()->addItem(bullet);
+            time->stop();
+            person->ispush = true;
+            person->columnas = person->ancho*4;
+            person->max_columnas = 7;
+        }
+    }
+}
+
+void MainWindow::key_release(personaje_principal *person, QTimer *time, QKeyEvent *evento)
+{
+    if (person == personaje1) {
+        if(evento->key() == Qt::Key_A && !evento->isAutoRepeat()){
+            if (person->letra1 == 'A') {
+                person->letra1 = person->letra2;
+                person->letra2 = 'a';
+            }
+            else {
+                person->letra2 = 'a';
+            }
+            person->ispush=false;
+        }
+        else if(evento->key() == Qt::Key_D && !evento->isAutoRepeat()){
+            if (person->letra1 == 'D') {
+                person->letra1 = person->letra2;
+                person->letra2 = 'd';
+            }
+            else {
+                person->letra2 = 'd';
+            }
+            person->ispush=false;
+        }
+        else if(evento->key() == Qt::Key_W && !evento->isAutoRepeat()){
+            if (person->letra1 == 'W') {
+                person->letra1 = person->letra2;
+                person->letra2 = 'w';
+            }
+            else {
+                person->letra2 = 'w';
+            }
+            person->ispush=false;
+        }
+        else if(evento->key() == Qt::Key_S && !evento->isAutoRepeat()){
+            if (person->letra1 == 'S') {
+                person->letra1 = person->letra2;
+                person->letra2 = 's';
+            }
+            else {
+                person->letra2 = 's';
+            }
+            person->ispush=false;
+        }
+        else if ((evento->key() == Qt::Key_Space) && (!evento->isAutoRepeat())) {
+            time->start();
+        }
+    }
+    else  if (person == personaje2){
+        if(evento->key() == Qt::Key_J && !evento->isAutoRepeat()){
+            if (person->letra1 == 'A') {
+                person->letra1 = person->letra2;
+                person->letra2 = 'a';
+            }
+            else {
+                person->letra2 = 'a';
+            }
+            person->ispush=false;
+        }
+        else if(evento->key() == Qt::Key_L && !evento->isAutoRepeat()){
+            if (person->letra1 == 'D') {
+                person->letra1 = person->letra2;
+                person->letra2 = 'd';
+            }
+            else {
+                person->letra2 = 'd';
+            }
+            person->ispush=false;
+        }
+        else if(evento->key() == Qt::Key_I && !evento->isAutoRepeat()){
+            if (person->letra1 == 'W') {
+                person->letra1 = person->letra2;
+                person->letra2 = 'w';
+            }
+            else {
+                person->letra2 = 'w';
+            }
+            person->ispush=false;
+        }
+        else if(evento->key() == Qt::Key_K && !evento->isAutoRepeat()){
+            if (person->letra1 == 'S') {
+                person->letra1 = person->letra2;
+                person->letra2 = 's';
+            }
+            else {
+                person->letra2 = 's';
+            }
+            person->ispush=false;
+        }
+        else if ((evento->key() == Qt::Key_P) && (!evento->isAutoRepeat())) {
+            time->start();
+        }
+    }
+}
+
+void MainWindow::direccion_disparo(personaje_principal *person)
+{
+    if ((person->letra1 == 'W' && person->letra2 == 'A') || (person->letra2 == 'W' && person->letra1 == 'A')) {
         bullet->setPos(person->x()+12, person->y()-7);
         bullet->filas = 40;
         bullet->setRotation(45);
         bullet->diagonal = true;
         bullet->velocidad = sqrt(pow(bullet->velocidad,2)/2);
     }
-    else if ((letra1 == 'W' && letra2 == 'D') || (letra2 == 'W' && letra1 == 'D')) {
+    else if ((person->letra1 == 'W' && person->letra2 == 'D') || (person->letra2 == 'W' && person->letra1 == 'D')) {
         bullet->setPos(person->x()+51, person->y()-7);
         bullet->filas = 20;
         bullet->setRotation(45);
         bullet->diagonal = true;
         bullet->velocidad = sqrt(pow(bullet->velocidad,2)/2);
     }
-    else if ((letra1 == 'S' && letra2 == 'A') || (letra2 == 'S' && letra1 == 'A')) {
+    else if ((person->letra1 == 'S' && person->letra2 == 'A') || (person->letra2 == 'S' && person->letra1 == 'A')) {
         bullet->setPos(person->x()+12, person->y()+18);
         bullet->filas = 60;
         bullet->setRotation(45);
         bullet->diagonal = true;
         bullet->velocidad = sqrt(pow(bullet->velocidad,2)/2);
     }
-    else if ((letra1 == 'S' && letra2 == 'D') || (letra2 == 'S' && letra1 == 'D')) {
+    else if ((person->letra1 == 'S' && person->letra2 == 'D') || (person->letra2 == 'S' && person->letra1 == 'D')) {
         bullet->setPos(person->x()+51, person->y()+18);
         bullet->filas = 0;
         bullet->setRotation(45);
         bullet->diagonal = true;
         bullet->velocidad = sqrt(pow(bullet->velocidad,2)/2);
     }
-    else if (letra1 == 'A' || letra2 == 'A') {
+    else if (person->letra1 == 'A' || person->letra2 == 'A') {
         bullet->setPos(person->x(), person->y()+12);
         bullet->filas = 40;
     }
-    else if (letra1 == 'D' || letra2 == 'D') {
+    else if (person->letra1 == 'D' || person->letra2 == 'D') {
         bullet->setPos(person->x()+35, person->y()+12);
         bullet->filas = 0;
     }
-    else if (letra1 == 'W' || letra2 == 'W') {
+    else if (person->letra1 == 'W' || person->letra2 == 'W') {
         bullet->setPos(person->x()+17, person->y()-5);
         bullet->filas = 20;
     }
-    else if (letra1 == 'S' || letra2 == 'S') {
+    else if (person->letra1 == 'S' || person->letra2 == 'S') {
         bullet->setPos(person->x()+12, person->y()+35);
         bullet->filas = 60;
     }
-    else if (letra2 == 'a') {
+    else if (person->letra2 == 'a') {
         bullet->setPos(person->x(), person->y()+12);
         bullet->filas = 40;
     }
-    else if (letra2 == 'd') {
+    else if (person->letra2 == 'd') {
         bullet->setPos(person->x()+35, person->y()+12);
         bullet->filas = 0;
     }
-    else if (letra2 == 'w') {
+    else if (person->letra2 == 'w') {
         bullet->setPos(person->x()+17, person->y()-5);
         bullet->filas = 20;
     }
-    else if (letra2 == 's') {
+    else if (person->letra2 == 's') {
         bullet->setPos(person->x()+12, person->y()+35);
         bullet->filas = 60;
     }
 }
 
-void MainWindow::movimiento_personaje()
+void MainWindow::personajes_activos()
 {
-    if ((letra1 == 'W' && letra2 == 'A') || (letra2 == 'W' && letra1 == 'A')) {
+    if (personaje_pri) {
+        movimiento_personaje(personaje1);
+    }
+    if (personaje_seg) {
+        movimiento_personaje(personaje2);
+    }
+}
+
+void MainWindow::movimiento_personaje(personaje_principal *person)
+{
+    if ((person->letra1 == 'W' && person->letra2 == 'A') || (person->letra2 == 'W' && person->letra1 == 'A')) {
         person->velocidad = sqrt(pow(6 ,2)/2);
-        colision_up();
-        actualizar();
-        colision_left();
-        actualizar();
+        colision_up(person);
+        actualizar(person);
+        colision_left(person);
+        actualizar(person);
     }
-    else if ((letra1 == 'W' && letra2 == 'D') || (letra2 == 'W' && letra1 == 'D')) {
+    else if ((person->letra1 == 'W' && person->letra2 == 'D') || (person->letra2 == 'W' && person->letra1 == 'D')) {
         person->velocidad = sqrt(pow(6, 2)/2);
-        colision_up();
-        actualizar();
-        colision_right();
-        actualizar();
+        colision_up(person);
+        actualizar(person);
+        colision_right(person);
+        actualizar(person);
     }
-    else if ((letra1 == 'S' && letra2 == 'A') || (letra2 == 'S' && letra1 == 'A')) {
+    else if ((person->letra1 == 'S' && person->letra2 == 'A') || (person->letra2 == 'S' && person->letra1 == 'A')) {
         person->velocidad = sqrt(pow(6, 2)/2);
-        colision_down();
-        actualizar();
-        colision_left();
-        actualizar();
+        colision_down(person);
+        actualizar(person);
+        colision_left(person);
+        actualizar(person);
     }
-    else if ((letra1 == 'S' && letra2 == 'D') || (letra2 == 'S' && letra1 == 'D')) {
+    else if ((person->letra1 == 'S' && person->letra2 == 'D') || (person->letra2 == 'S' && person->letra1 == 'D')) {
         person->velocidad = sqrt(pow(6, 2)/2);
-        colision_down();
-        actualizar();
-        colision_right();
-        actualizar();
+        colision_down(person);
+        actualizar(person);
+        colision_right(person);
+        actualizar(person);
     }
-    else if (letra1 == 'A' || letra2 == 'A') {
+    else if (person->letra1 == 'A' || person->letra2 == 'A') {
         person->velocidad = 6;
         person->filas = 70;
-        colision_left();
-        actualizar();
+        colision_left(person);
+        actualizar(person);
     }
-    else if (letra1 == 'D' || letra2 == 'D') {
+    else if (person->letra1 == 'D' || person->letra2 == 'D') {
         person->velocidad = 6;
         person->filas = 105;
-        colision_right();
-        actualizar();
+        colision_right(person);
+        actualizar(person);
     }
-    else if (letra1 == 'W' || letra2 == 'W') {
+    else if (person->letra1 == 'W' || person->letra2 == 'W') {
         person->velocidad = 6;
         person->filas = 35;
-        colision_up();
-        actualizar();
+        colision_up(person);
+        actualizar(person);
     }
-    else if (letra1 == 'S' || letra2 == 'S') {
+    else if (person->letra1 == 'S' || person->letra2 == 'S') {
         person->velocidad = 6;
         person->filas = 0;
-        colision_down();
-        actualizar();
+        colision_down(person);
+        actualizar(person);
     }
-    colision_spawn();
+    colision_spawn(person);
 }
 
-void MainWindow::actualizar()
+void MainWindow::actualizar(personaje_principal *person)
 {
-    view->centerOn(person);
-    barra_personaje->setGeometry(person->x()+15,person->y()+8, barra_personaje->maximumWidth(), barra_personaje->maximumHeight());
+    if (person == personaje1) {
+        view->centerOn(person);
+    }
+    person->barra_personaje->move(person->x()+15,person->y()+8);
 }
 
-void MainWindow::colision_up()
+void MainWindow::colision_up(personaje_principal *person)
 {
     person->up();
     for (int i = 0;i < escenario->getContenedor()->size();i++) {
@@ -288,7 +413,7 @@ void MainWindow::colision_up()
     }
 }
 
-void MainWindow::colision_down()
+void MainWindow::colision_down(personaje_principal *person)
 {
     person->down();
     for (int i = 0;i < escenario->getContenedor()->size();i++) {
@@ -298,7 +423,7 @@ void MainWindow::colision_down()
     }
 }
 
-void MainWindow::colision_left()
+void MainWindow::colision_left(personaje_principal *person)
 {
     person->left();
     for (int i = 0;i < escenario->getContenedor()->size();i++) {
@@ -308,7 +433,7 @@ void MainWindow::colision_left()
     }
 }
 
-void MainWindow::colision_right()
+void MainWindow::colision_right(personaje_principal *person)
 {
     person->right();
     for (int i = 0;i < escenario->getContenedor()->size();i++) {
@@ -318,7 +443,7 @@ void MainWindow::colision_right()
     }
 }
 
-void MainWindow::colision_spawn()
+void MainWindow::colision_spawn(personaje_principal *person)
 {
     if (Spawner->getEnemigos()->isEmpty()) {
         for (int i = 0 ;i < escenario->getZonaspawn()->size();i++) {
@@ -327,58 +452,152 @@ void MainWindow::colision_spawn()
                 for(auto it : *Spawner->getEnemigos()){
                     escenario->getMundo()->addItem(it);
                 }
-                delete escenario->getZonaspawn()->at(i);
+                escenario->getZonaspawn()->removeAt(i);
             }
         }
     }
     else {
         for(auto it : *Spawner->getEnemigos()){
-            it->seguir(person->x(),person->y());
+            if (it->collidesWithItem(person)) {
+                person->velocidad = 4;
+                if (person->x()-it->x() < 15 and person->x()-it->x() > -15 ) {
+                    if (person->x() > it->x()) {
+                        colision_right(person);
+                    }
+                    else {
+                        colision_left(person);
+                    }
+                    actualizar(person);
+                    person->vida -= 8;
+                    person->barra_personaje->setValue(person->vida);
+                }
+                else {
+                    for (auto itt : *Spawner->getEnemigos()) {
+                        if (person->x() > it->x()) {
+                            if (itt != it) {
+                                if (it->collidesWithItem(itt)){
+                                    itt->seguir(itt->x(), itt->y());
+                                }
+                            }
+                            it->seguir(person->x()+20,person->y());
+                        }
+                        else if (it->x() > person->x()){
+                            if (itt != it) {
+                                if (it->collidesWithItem(itt)){
+                                    itt->seguir(itt->x(), itt->y());
+                                }
+                            }
+                            it->seguir(person->x()-20,person->y());
+                        }
+                    }
+                }
+            }
+            else {
+                for (auto itt : *Spawner->getEnemigos()) {
+                    if (itt != it) {
+                        if (it->collidesWithItem(itt)){
+                            itt->seguir(itt->x(), itt->y());
+                        }
+                    }
+                }
+                it->seguir(person->x(),person->y());
+            }
         }
     }
 }
 
 void MainWindow::on_boton_Nueva_clicked()
 {
+    inicio->modo_dificultad();
+    connect(inicio->getBoton_Facil(), &QPushButton::clicked , this, &MainWindow::on_boton_Facil_clicked);
+    connect(inicio->getBoton_Dificil(), &QPushButton::clicked , this, &MainWindow::on_boton_Dificil_clicked);
+    estado = "new";
+}
+
+void MainWindow::on_boton_Facil_clicked()
+{
     delete inicio;
 
     escenario = new mapa(":/Imagenes/primer_mapa.png");
 
     timer1 = new QTimer;
-    person = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
-    barra_personaje = new QProgressBar;
+    personaje1 = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
     vidas = new life(this, 3, 100);
 
     Spawner = new spawn();
 
     view->setScene(escenario->getMundo());
     view->scale(1.7,1.4);
-    view->centerOn(person->x(),person->y());
+    view->centerOn(personaje1->x(), personaje1->y());
 
     Spawner->carga_Datos(":/info/enemy_info.txt");
 
-    escenario->carga_Datos(":/info/colisiones1.txt","colisiones");
-    escenario->carga_Datos(":/info/zonas_spawn.txt","spawners");
-    escenario->getMundo()->addItem(person);
-    escenario->getMundo()->addWidget(barra_personaje);
-
-    barra_personaje->setMinimum(0);
-    barra_personaje->setMaximum(1000);
-    barra_personaje->setValue(1000);
-    barra_personaje->setMaximumSize(35,10);
-    barra_personaje->setGeometry(person->x()+15,person->y()+8, barra_personaje->maximumWidth(), barra_personaje->maximumHeight());
-    barra_personaje->setTextVisible(false);
+    escenario->carga_Datos(":/info/colisiones1.txt", escenario->getContenedor());
+    escenario->carga_Datos(":/info/zonas_spawn.txt", escenario->getZonaspawn());
+    escenario->getMundo()->addItem(personaje1);
+    escenario->getMundo()->addWidget(personaje1->barra_personaje);
 
     timer1->start(40);
 
-    connect(timer1, &QTimer::timeout, this, &MainWindow::movimiento_personaje);
+    connect(timer1, &QTimer::timeout, this, &MainWindow::personajes_activos);
+    personaje_pri = true;
+    personaje_seg = false;
 
-    estado = "new";
+    estado = "easy";
+}
+
+void MainWindow::on_boton_Dificil_clicked()
+{
+    delete inicio;
+
+    escenario = new mapa(":/Imagenes/primer_mapa.png");
+
+    timer1 = new QTimer;
+    personaje1 = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
+    vidas = new life(this, 3, 100);
+
+    Spawner = new spawn();
+
+    view->setScene(escenario->getMundo());
+    view->scale(1.7,1.4);
+    view->centerOn(personaje1->x(), personaje1->y());
+
+    Spawner->carga_Datos(":/info/enemy_info.txt");
+
+    escenario->carga_Datos(":/info/colisiones1.txt", escenario->getContenedor());
+    escenario->carga_Datos(":/info/zonas_spawn.txt", escenario->getZonaspawn());
+    escenario->getMundo()->addItem(personaje1);
+    escenario->getMundo()->addWidget(personaje1->barra_personaje);
+
+    timer1->start(40);
+
+    connect(timer1, &QTimer::timeout, this, &MainWindow::personajes_activos);
+    personaje_pri = true;
+    personaje_seg = false;
+
+    estado = "hard";
 }
 
 void MainWindow::on_boton_Multi_clicked()
 {
-    close();
+    on_boton_Dificil_clicked();
+
+    personaje_seg = true;
+
+    timer2 = new QTimer;
+    personaje2 = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
+
+    escenario->getMundo()->addItem(personaje2);
+    escenario->getMundo()->addWidget(personaje2->barra_personaje);
+
+    timer2->start(70);
+
+    connect(timer2, &QTimer::timeout, this, &MainWindow::personajes_activos);
+
+    personaje2->setPos(370, 740);
+    actualizar(personaje2);
+
+    estado = "multi";
 }
 
 void MainWindow::on_boton_Cargar_clicked()

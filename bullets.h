@@ -8,13 +8,12 @@
 #include <QPixmap>
 #include <QGraphicsScene>
 #include "enemigos.h"
-#include "colisiones.h"
 
 class bullets : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QObject *parent = nullptr);
+    explicit bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<enemigos*> *enemy, QObject *parent = nullptr);
     ~bullets();
 
     QRectF boundingRect() const;
@@ -31,6 +30,7 @@ public:
     bool diagonal=false;
 
 private:
+    QVector<enemigos*> *Enemigos;
     QPixmap *img;
     QTimer *timer;
     float ancho, alto;
