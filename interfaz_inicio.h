@@ -20,6 +20,8 @@ public:
     QGraphicsScene *getScene() const;
     QVBoxLayout *getLay() const;
     Button *getBoton_Nueva() const;
+    Button *getBoton_Facil() const;
+    Button *getBoton_Dificil() const;
     Button *getBoton_Multijugador() const;
     Button *getBoton_Cargar() const;
     Button *getBoton_Eliminar() const;
@@ -38,8 +40,8 @@ private:
     Button *boton_Ayuda;
     Button *boton_Salir;
 
-    Button *boton_facil;
-    Button *boton_dificil;
+    Button *boton_Facil;
+    Button *boton_Dificil;
 };
 
 #endif // INTERFAZ_INICIO_H

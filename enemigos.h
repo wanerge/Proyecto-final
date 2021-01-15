@@ -6,6 +6,8 @@
 #include <QPainter>
 #include <QTimer>
 #include <QPixmap>
+#include <math.h>
+#include <QDebug>
 
 class enemigos : public QObject, public QGraphicsItem
 {
@@ -21,11 +23,15 @@ public:
     void down();
     void left();
     void right();
+
+    void movimiento();
+
     void seguir(float playerx_,float playery_);
 
     float velocidad = 5;
     float filas = 0, columnas = 0, total_columnas;
-    int vida;
+    int vida = 90;
+
 private:
     QPixmap *img;
     QTimer *timer;

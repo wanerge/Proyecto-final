@@ -19,11 +19,11 @@ public:
     void generador(QString mob, QString imagsource);
     void zona_activa(int i);
 
-    QList<enemigos *> *getEnemigos() const;
+    QVector<enemigos *> *getEnemigos() const;
 
 private:
     QMap<QString, float *> *infoenemy;
-    QList<enemigos*> *Enemigos;
+    QVector<enemigos *> *Enemigos;
 
     float *datos;
     QVector<int> numero_datos;

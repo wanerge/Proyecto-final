@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QTimer>
 #include <QPixmap>
+#include <QProgressBar>
 
 class personaje_principal : public QObject, public QGraphicsItem
 {
@@ -14,16 +15,17 @@ public:
     explicit personaje_principal(QString direccion, float ancho_, float alto_, float fila_, float columna_, QObject *parent = nullptr);
     ~personaje_principal();
 
-    QPixmap *img;
-    QTimer *timer;
-
     //variable que me dice si estan precionando una tecla
     bool ispush = false;
 
     int vida = 1000, max_columnas = 4;
-
     float velocidad = 6, filas, columnas;
     float ancho, alto;
+
+    char letra1;
+    char letra2;
+
+    QProgressBar *barra_personaje;
 
     //funcion movimiento ascendente personaje
     void up();
@@ -34,6 +36,10 @@ public:
     //dibujo el recuadro que contedra al personaje
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+private:
+    QPixmap *img;
+    QTimer *timer;
 
 signals:
 

@@ -4,7 +4,7 @@ spawn::spawn(QObject *parent) : QObject(parent)
 {
     //carga_Datos(":/info/enemy_info.txt");
     infoenemy = new QMap<QString, float *>;
-    Enemigos = new QList<enemigos *>;
+    Enemigos = new QVector<enemigos *>;
 }
 
 void spawn::carga_Datos(QString nombre_archivo)
@@ -47,7 +47,7 @@ void spawn::carga_Datos(QString nombre_archivo)
 
 void spawn::generador(QString mob, QString imagsource)
 {
-    Enemigos = new QList<enemigos *>;
+    Enemigos = new QVector<enemigos *>;
     QMap<QString, float *>::iterator i = infoenemy->find(mob);
     for (int num_enemigo = 0, indice_dato = 4; num_enemigo < i.value()[3] ; num_enemigo++, indice_dato+=2) {
         Enemigos->push_back(new enemigos(imagsource,i.value()[0], i.value()[1],i.value()[2],i.value()[indice_dato],i.value()[indice_dato+1]));
@@ -63,7 +63,7 @@ void spawn::zona_activa(int i)
     }
 }
 
-QList<enemigos *> *spawn::getEnemigos() const
+QVector<enemigos *> *spawn::getEnemigos() const
 {
     return Enemigos;
 }

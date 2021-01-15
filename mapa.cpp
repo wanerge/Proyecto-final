@@ -9,7 +9,7 @@ mapa::mapa(QString mundo_)
     mundo->setBackgroundBrush(QBrush(QImage(mundo_)));
 }
 
-void mapa::carga_Datos(QString nombre_archivo, QString cont)
+void mapa::carga_Datos(QString nombre_archivo, QVector<colisiones *> *container)
 {
     QString linea1, linea2;
     int datos[4];
@@ -38,24 +38,15 @@ void mapa::carga_Datos(QString nombre_archivo, QString cont)
                 }
                 else linea2.push_back(linea1[i]);
             }
-                datos[3] = linea2.toInt();
-            if(cont == "colisiones"){
-                colisiones *rec = new colisiones(datos[0], datos[1], datos[2], datos[3]);
-                contenedor->push_back(rec);
-            }
-            else if(cont == "spawners"){
-                colisiones *rec = new colisiones(datos[0], datos[1], datos[2], datos[3]);
-                zonaspawn->push_back(rec);
-            }
+            datos[3] = linea2.toInt();
+            colisiones *rec = new colisiones(datos[0], datos[1], datos[2], datos[3]);
+            container->push_back(rec);
         }
         archivo.close();
     }
-    //    for (auto it : *contenedor){
-    //        mundo->addItem(it);
-    //    }
-    for(auto it : *zonaspawn){
-        mundo->addItem(it);
-    }
+//    for(auto it : *container){
+//        mundo->addItem(it);
+//    }
 }
 
 QVector<colisiones *> *mapa::getContenedor() const

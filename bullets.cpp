@@ -1,10 +1,12 @@
 #include "bullets.h"
 
-bullets::bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QObject *parent) : QObject(parent)
+bullets::bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<enemigos*> *enemy, QObject *parent) : QObject(parent)
 {
     total_columnas = total_columnas_;
     ancho = ancho_;
     alto = alto_;
+
+    Enemigos = enemy;
 
     img = new QPixmap(direccion_img);
     timer = new QTimer;
@@ -48,6 +50,20 @@ void bullets::Actualizacion()
             down();
         }
     }
+
+    if (distancia_max > 100) {
+        for (int i = 0; i < Enemigos->size() ; i++ ) {
+            if (this->collidesWithItem(Enemigos->at(i))) {
+                distancia_max = 120;
+                Enemigos->at(i)->vida -= 30;
+                if (Enemigos->at(i)->vida <= 0) {
+                    scene()->removeItem(Enemigos->at(i));
+                    Enemigos->removeAt(i);
+                }
+            }
+        }
+    }
+
     distancia_max -= 20;
     if (distancia_max == 100) {
         filas = 80;

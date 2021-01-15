@@ -11,6 +11,14 @@ personaje_principal::personaje_principal(QString direccion, float ancho_, float 
 
     img = new QPixmap(direccion);
     timer = new QTimer;
+    barra_personaje = new QProgressBar;
+
+    barra_personaje->setMinimum(0);
+    barra_personaje->setMaximum(vida);
+    barra_personaje->setValue(vida);
+    barra_personaje->setMaximumSize(35,10);
+    barra_personaje->setGeometry(x()+15, y()+8, barra_personaje->maximumWidth(), barra_personaje->maximumHeight());
+    barra_personaje->setTextVisible(false);
 
     timer->start(50);
 
@@ -79,6 +87,7 @@ void personaje_principal::right()
 
 personaje_principal::~personaje_principal()
 {
+    delete barra_personaje;
     delete img;
     delete timer;
 }

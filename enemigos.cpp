@@ -20,25 +20,50 @@ void enemigos::Actualizacion()
     }
     this->update(ancho/2, alto/2, ancho, alto);
 
-    if(y() < playery-5 ){
-        down();
-        filas=0;
-    }
-    else if(y() > playery+5){
-        up();
-        filas = alto;
-    }
-    else if(x() > playerx){
-        left();
-        filas = alto*3;
-    }
-    else{
-        right();
-        filas = alto*2;
-    }
-
+    movimiento();
 }
 
+void enemigos::movimiento()
+{
+    if(y() < playery and x()-playerx >-30 and x()-playerx < 30){
+        filas = 0;
+        down();
+    }
+    else if(y() > playery and x()-playerx >-30 and x()-playerx < 30){
+        filas = alto;
+        up();
+    }
+    else if(x() > playerx and y()-playery > -30 and y()-playery < 30){
+        filas = alto*3;
+        left();
+    }
+    else if(x() < playerx and y()-playery > -30 and y()-playery < 30){
+        filas = alto*2;
+        right();
+    }
+    else {
+        if (x() < playerx and y() < playery) {
+            filas = alto*2;
+            right();
+            down();
+        }
+        else if (x() > playerx and y() < playery) {
+            filas = alto*3;
+            left();
+            down();
+        }
+        else if (x() < playerx and y() > playery) {
+            filas = alto*2;
+            right();
+            up();
+        }
+        else if (x() > playerx and y() > playery) {
+            filas = alto*3;
+            left();
+            up();
+        }
+    }
+}
 
 QRectF enemigos::boundingRect() const
 {
