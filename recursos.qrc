@@ -16,9 +16,7 @@
         <file>Imagenes/disparos/taladro.png</file>
         <file>Imagenes/disparos/disparos_varios.png</file>
         <file>Imagenes/corazon.png</file>
-        <file>info/enemy_info.txt</file>
         <file>info/zonas_spawn.txt</file>
-        <file>Imagenes/Enemigos/mundo1/1araña.png</file>
         <file>Imagenes/Enemigos/mundo1/1Cien_pies.png</file>
         <file>Imagenes/Enemigos/mundo1/1Cucarron.png</file>
         <file>Imagenes/Enemigos/mundo1/1Escarabajo.png</file>
@@ -30,5 +28,22 @@
         <file>Imagenes/Enemigos/mundo1/3Dragon_agua.png</file>
         <file>Imagenes/Enemigos/mundo1/4mini_cangrejo.png</file>
         <file>Imagenes/Enemigos/mundo1/4Urgot.png</file>
+        <file>Imagenes/Enemigos/mundo1/1arana.png</file>
+        <file>Imagenes/segundo_mapa.png</file>
+        <file>Imagenes/Enemigos/mundo2/Demonio_cajaxd.png</file>
+        <file>Imagenes/Enemigos/mundo2/demonio_jefe.png</file>
+        <file>Imagenes/Enemigos/mundo2/diablo_enano.png</file>
+        <file>Imagenes/Enemigos/mundo2/Dracula.png</file>
+        <file>Imagenes/Enemigos/mundo2/Drago_Esqueleto.png</file>
+        <file>Imagenes/Enemigos/mundo2/Esqueleticoxd.png</file>
+        <file>Imagenes/Enemigos/mundo2/Gargola.png</file>
+        <file>Imagenes/Enemigos/mundo2/genio.png</file>
+        <file>Imagenes/Enemigos/mundo2/Momia .png</file>
+        <file>Imagenes/Enemigos/mundo2/Parca.png</file>
+        <file>Imagenes/Enemigos/mundo2/Tarantula.png</file>
+        <file>Imagenes/Enemigos/mundo2/Toro.png</file>
+        <file>info/enemy_info.txt</file>
+        <file>info/enemy_info2.txt</file>
+        <file>info/zonas_spawn2.txt</file>
     </qresource>
 </RCC>
