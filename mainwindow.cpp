@@ -341,7 +341,7 @@ void MainWindow::personajes_activos()
 void MainWindow::movimiento_personaje(personaje_principal *person)
 {
     if ((person->letra1 == 'W' && person->letra2 == 'A') || (person->letra2 == 'W' && person->letra1 == 'A')) {
-        person->velocidad = sqrt(pow(6 ,2)/2);
+        person->velocidad = sqrt(pow(6, 2)/2);
         colision_up(person);
         actualizar(person);
         colision_left(person);
@@ -411,6 +411,11 @@ void MainWindow::colision_up(personaje_principal *person)
             person->down();
         }
     }
+    for (int i = 0;i < escenario->getZona_blocked()->size();i++) {
+        if(person->collidesWithItem(escenario->getZona_blocked()->at(i))){
+            person->down();
+        }
+    }
 }
 
 void MainWindow::colision_down(personaje_principal *person)
@@ -418,6 +423,11 @@ void MainWindow::colision_down(personaje_principal *person)
     person->down();
     for (int i = 0;i < escenario->getContenedor()->size();i++) {
         if(person->collidesWithItem(escenario->getContenedor()->at(i))){
+            person->up();
+        }
+    }
+    for (int i = 0;i < escenario->getZona_blocked()->size();i++) {
+        if(person->collidesWithItem(escenario->getZona_blocked()->at(i))){
             person->up();
         }
     }
@@ -431,6 +441,13 @@ void MainWindow::colision_left(personaje_principal *person)
             person->right();
         }
     }
+    for (int i = 0;i < escenario->getZona_blocked()->size();i++) {
+        if(person->collidesWithItem(escenario->getZona_blocked()->at(i))){
+            person->right();
+        }
+    }
+
+
 }
 
 void MainWindow::colision_right(personaje_principal *person)
@@ -441,18 +458,28 @@ void MainWindow::colision_right(personaje_principal *person)
             person->left();
         }
     }
+    for (int i = 0;i < escenario->getZona_blocked()->size();i++) {
+        if(person->collidesWithItem(escenario->getZona_blocked()->at(i))){
+            person->left();
+        }
+    }
 }
 
 void MainWindow::colision_spawn(personaje_principal *person)
 {
     if (Spawner->getEnemigos()->isEmpty()) {
+        if(Spawner->activo){
+            //escenario->getMundo()->removeItem(escenario->getZona_blocked()->back());
+            escenario->getZona_blocked()->pop_back();
+            Spawner->activo=false;
+        }
         for (int i = 0 ;i < escenario->getZonaspawn()->size();i++) {
             if(person->collidesWithItem(escenario->getZonaspawn()->at(i))){
                 Spawner->zona_activa(i);
                 for(auto it : *Spawner->getEnemigos()){
                     escenario->getMundo()->addItem(it);
                 }
-                escenario->getZonaspawn()->removeAt(i);
+                //escenario->getZonaspawn()->removeAt(i);
             }
         }
     }
@@ -534,6 +561,7 @@ void MainWindow::on_boton_Facil_clicked()
 
     escenario->carga_Datos(":/info/colisiones1.txt", escenario->getContenedor());
     escenario->carga_Datos(":/info/zonas_spawn.txt", escenario->getZonaspawn());
+    escenario->carga_Datos(":/info/zona_bloqueada1.txt",escenario->getZona_blocked());
     escenario->getMundo()->addItem(personaje1);
     escenario->getMundo()->addWidget(personaje1->barra_personaje);
 

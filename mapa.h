@@ -19,10 +19,13 @@ public:
 
     void carga_Datos(QString nombre_archivo, QVector<colisiones *> *container);
 
+    QVector<colisiones *> *getZona_blocked() const;
+
 private:
     QGraphicsScene *mundo;
     QVector<colisiones *> *contenedor;
     QVector<colisiones *> *zonaspawn;
+    QVector<colisiones *> *zona_blocked;
 };
 
 #endif // MAPA_H
