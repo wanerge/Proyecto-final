@@ -28,6 +28,8 @@ private:
     float *datos;
     QVector<int> numero_datos;
 
+    int mundo = 1;
+
 signals:
 
 };

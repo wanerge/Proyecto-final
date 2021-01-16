@@ -14,6 +14,7 @@
 #include "personaje_principal.h"
 #include "mapa.h"
 #include "interfaz_inicio.h"
+#include "interfaz_pausa.h"
 #include "bullets.h"
 #include "colisiones.h"
 #include "life.h"
@@ -60,6 +61,7 @@ private:
 
     QGraphicsView *view;
     interfaz_inicio *inicio;
+    interfaz_pausa *pausa;
     QGraphicsScene *ayuda;
     mapa *escenario;
     QString estado;
@@ -87,6 +89,10 @@ private slots:
     void on_boton_Eliminar_clicked();
     void on_boton_Ayuda_clicked();
     void on_boton_Salir_clicked();
+
+    void on_boton_Guardar_clicked();
+    void on_boton_Reiniciar_clicked();
+    void on_boton_Menu_clicked();
 };
 
 

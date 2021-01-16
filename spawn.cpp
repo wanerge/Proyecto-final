@@ -47,7 +47,6 @@ void spawn::carga_Datos(QString nombre_archivo)
 
 void spawn::generador(QString mob, QString imagsource)
 {
-    Enemigos = new QVector<enemigos *>;
     QMap<QString, float *>::iterator i = infoenemy->find(mob);
     for (int num_enemigo = 0, indice_dato = 4; num_enemigo < i.value()[3] ; num_enemigo++, indice_dato+=2) {
         Enemigos->push_back(new enemigos(imagsource,i.value()[0], i.value()[1],i.value()[2],i.value()[indice_dato],i.value()[indice_dato+1]));
@@ -57,8 +56,7 @@ void spawn::generador(QString mob, QString imagsource)
 
 void spawn::zona_activa(int i)
 {
-    delete Enemigos;
-    if(mundo ==1){
+    if(mundo == 1){
         if(i == 0){
             generador("Cucarron",":/Imagenes/Enemigos/mundo1/1Cucarron.png");
         }
@@ -124,7 +122,6 @@ void spawn::zona_activa(int i)
         else if(i == 10){
             generador("Diablo",":/Imagenes/Enemigos/mundo2/diablo_enano.png");
         }
-
     }
 }
 

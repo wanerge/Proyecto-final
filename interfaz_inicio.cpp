@@ -112,6 +112,7 @@ QWidget *interfaz_inicio::getWid() const
 
 interfaz_inicio::~interfaz_inicio()
 {
+    delete lay;
     delete wid;
     delete scene;
 }
