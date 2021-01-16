@@ -25,19 +25,19 @@ void enemigos::Actualizacion()
 
 void enemigos::movimiento()
 {
-    if(y() < playery and x()-playerx >-30 and x()-playerx < 30){
+    if(y() < playery and x()-playerx >-10 and x()-playerx < 10){
         filas = 0;
         down();
     }
-    else if(y() > playery and x()-playerx >-30 and x()-playerx < 30){
+    else if(y() > playery and x()-playerx >-10 and x()-playerx < 10){
         filas = alto;
         up();
     }
-    else if(x() > playerx and y()-playery > -30 and y()-playery < 30){
+    else if(x() > playerx and y()-playery > -10 and y()-playery < 10){
         filas = alto*3;
         left();
     }
-    else if(x() < playerx and y()-playery > -30 and y()-playery < 30){
+    else if(x() < playerx and y()-playery > -10 and y()-playery < 10){
         filas = alto*2;
         right();
     }
@@ -97,8 +97,8 @@ void enemigos::right()
 
 void enemigos::seguir(float playerx_, float playery_)
 {
-    playerx = playerx_;
-    playery = playery_;
+    playerx = playerx_ - 15;
+    playery = playery_ - 15;
 }
 
 enemigos::~enemigos()

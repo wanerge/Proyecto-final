@@ -3,6 +3,7 @@
 personaje_principal::personaje_principal(QString direccion, float ancho_, float alto_, float fila_, float columna_, QObject *parent) : QObject(parent)
 {
     setPos(150, 740);
+    //setPos(-30, -20);
 
     filas = fila_;
     columnas = columna_;

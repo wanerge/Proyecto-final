@@ -42,6 +42,8 @@ void MainWindow::menu()
     connect(inicio->getBoton_Eliminar(), &QPushButton::clicked , this, &MainWindow::on_boton_Eliminar_clicked);
     connect(inicio->getBoton_Ayuda(), &QPushButton::clicked , this, &MainWindow::on_boton_Ayuda_clicked);
     connect(inicio->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Salir_clicked);
+
+    estado = "menu";
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *evento)
@@ -55,32 +57,55 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
         }
     }
     if(evento->key()==Qt::Key_Escape){
-        if (estado == "new") {
+        if (estado == "pause_N_easy"){
+            delete pausa;
+            estado = "easy";
+        }
+        else if (estado == "pause_N_hard") {
+            delete pausa;
+            estado = "hard";
+        }
+        else if (estado == "pause_M") {
+            delete pausa;
+            estado = "multi";
+        }
+        else if (estado == "new") {
             inicio->modo_menu();
+            estado = "esc";
+            connect(inicio->getBoton_Nueva(), &QPushButton::clicked , this, &MainWindow::on_boton_Nueva_clicked);
+            connect(inicio->getBoton_Multijugador(), &QPushButton::clicked , this, &MainWindow::on_boton_Multi_clicked);
+            connect(inicio->getBoton_Cargar(), &QPushButton::clicked , this, &MainWindow::on_boton_Cargar_clicked);
+            connect(inicio->getBoton_Eliminar(), &QPushButton::clicked , this, &MainWindow::on_boton_Eliminar_clicked);
+            connect(inicio->getBoton_Ayuda(), &QPushButton::clicked , this, &MainWindow::on_boton_Ayuda_clicked);
+            connect(inicio->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Salir_clicked);
         }
         else if (estado == "hard" || estado == "easy") {
-            view->resetTransform();
-            delete timer1;
-            delete vidas;
-            delete personaje1;
-            delete escenario;
-            delete Spawner;
+            pausa = new interfaz_pausa(false);
+            this->setCentralWidget(pausa->getWid());
+            connect(pausa->getBoton_Guardar(), &QPushButton::clicked , this, &MainWindow::on_boton_Guardar_clicked);
+            connect(pausa->getBoton_Reiniciar(), &QPushButton::clicked , this, &MainWindow::on_boton_Reiniciar_clicked);
+            connect(pausa->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Menu_clicked);
+            if (estado == "hard") {
+                estado = "pause_N_hard";
+            }
+            else {
+                estado = "pause_N_easy";
+            }
         }
         else if (estado == "multi") {
-            view->resetTransform();
-            delete timer1;
-            delete timer2;
-            delete vidas;
-            delete personaje1;
-            delete personaje2;
-            delete escenario;
-            delete Spawner;
+            pausa = new interfaz_pausa(true);
+            this->setCentralWidget(pausa->getWid());
+            connect(pausa->getBoton_Reiniciar(), &QPushButton::clicked , this, &MainWindow::on_boton_Reiniciar_clicked);
+            connect(pausa->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Menu_clicked);
+            estado = "pause_M";
         }
         else if(estado == "help"){
             delete ayuda;
+            menu();
         }
-        estado = "esc";
-        menu();
+        else{
+            estado = "esc";
+        }
     }
 }
 
@@ -487,7 +512,7 @@ void MainWindow::colision_spawn(personaje_principal *person)
         for(auto it : *Spawner->getEnemigos()){
             if (it->collidesWithItem(person)) {
                 person->velocidad = 4;
-                if (person->x()-it->x() < 15 and person->x()-it->x() > -15 ) {
+                if (person->x()-it->x() < 6 and person->x()-it->x() > -6) {
                     if (person->x() > it->x()) {
                         colision_right(person);
                     }
@@ -506,7 +531,7 @@ void MainWindow::colision_spawn(personaje_principal *person)
                                     itt->seguir(itt->x(), itt->y());
                                 }
                             }
-                            it->seguir(person->x()+20,person->y());
+                            it->seguir(person->x()+100,person->y()+15);
                         }
                         else if (it->x() > person->x()){
                             if (itt != it) {
@@ -514,19 +539,12 @@ void MainWindow::colision_spawn(personaje_principal *person)
                                     itt->seguir(itt->x(), itt->y());
                                 }
                             }
-                            it->seguir(person->x()-20,person->y());
+                            it->seguir(person->x()-100,person->y()+15);
                         }
                     }
                 }
             }
             else {
-                for (auto itt : *Spawner->getEnemigos()) {
-                    if (itt != it) {
-                        if (it->collidesWithItem(itt)){
-                            itt->seguir(itt->x(), itt->y());
-                        }
-                    }
-                }
                 it->seguir(person->x(),person->y());
             }
         }
@@ -543,7 +561,9 @@ void MainWindow::on_boton_Nueva_clicked()
 
 void MainWindow::on_boton_Facil_clicked()
 {
-    delete inicio;
+    if (estado != "reset") {
+        delete inicio;
+    }
 
     escenario = new mapa(":/Imagenes/primer_mapa.png");
 
@@ -576,7 +596,9 @@ void MainWindow::on_boton_Facil_clicked()
 
 void MainWindow::on_boton_Dificil_clicked()
 {
-    delete inicio;
+    if (estado != "reset") {
+        delete inicio;
+    }
 
     escenario = new mapa(":/Imagenes/primer_mapa.png");
 
@@ -682,6 +704,70 @@ void MainWindow::on_boton_Ayuda_clicked()
 void MainWindow::on_boton_Salir_clicked()
 {
     close();
+}
+
+void MainWindow::on_boton_Guardar_clicked()
+{
+
+}
+
+void MainWindow::on_boton_Reiniciar_clicked()
+{
+    delete pausa;
+    if (estado == "pause_N_easy" || estado == "pause_N_hard") {
+        view->resetTransform();
+        delete timer1;
+        delete vidas;
+        delete personaje1;
+        delete escenario;
+        delete Spawner;
+
+        if (estado == "pause_N_easy") {
+            estado = "reset";
+            on_boton_Facil_clicked();
+        }
+        else {
+            estado = "reset";
+            on_boton_Dificil_clicked();
+        }
+    }
+    else if (estado == "pause_M") {
+        view->resetTransform();
+        delete timer1;
+        delete timer2;
+        delete vidas;
+        delete personaje1;
+        delete personaje2;
+        delete escenario;
+        delete Spawner;
+
+        estado = "reset";
+        on_boton_Multi_clicked();
+    }
+}
+
+void MainWindow::on_boton_Menu_clicked()
+{
+    delete pausa;
+    if (estado == "pause_N_easy" || estado == "pause_N_hard") {
+        view->resetTransform();
+        delete timer1;
+        delete vidas;
+        delete personaje1;
+        delete escenario;
+        delete Spawner;
+    }
+    else if (estado == "pause_M") {
+        view->resetTransform();
+        delete timer1;
+        delete timer2;
+        delete vidas;
+        delete personaje1;
+        delete personaje2;
+        delete escenario;
+        delete Spawner;
+    }
+    menu();
 }
 
 MainWindow::~MainWindow()

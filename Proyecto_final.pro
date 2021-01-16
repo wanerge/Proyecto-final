@@ -15,6 +15,7 @@ SOURCES += \
     colisiones.cpp \
     enemigos.cpp \
     interfaz_inicio.cpp \
+    interfaz_pausa.cpp \
     life.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     colisiones.h \
     enemigos.h \
     interfaz_inicio.h \
+    interfaz_pausa.h \
     life.h \
     mainwindow.h \
     mapa.h \

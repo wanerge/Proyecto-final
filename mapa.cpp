@@ -45,8 +45,10 @@ void mapa::carga_Datos(QString nombre_archivo, QVector<colisiones *> *container)
         }
         archivo.close();
     }
-//    for(auto it : *container){
-//        mundo->addItem(it);
+//    if (nombre_archivo == ":/info/zonas_spawn.txt") {
+//        for(auto it : *container){
+//            mundo->addItem(it);
+//        }
 //    }
 }
 

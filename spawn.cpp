@@ -125,7 +125,6 @@ void spawn::zona_activa(int i)
         else if(i == 10){
             generador("Diablo",":/Imagenes/Enemigos/mundo2/diablo_enano.png");
         }
-
     }
 }
 
