@@ -5,7 +5,6 @@
         <file>Imagenes/portada.jpg</file>
         <file>Imagenes/portada2.jpg</file>
         <file>Imagenes/ayuda.png</file>
-        <file>info/colisiones1.txt</file>
         <file>info/colisiones2.txt</file>
         <file>Imagenes/disparos/bola_amarilla.png</file>
         <file>Imagenes/disparos/bola_azul.png</file>
@@ -45,5 +44,8 @@
         <file>info/enemy_info.txt</file>
         <file>info/enemy_info2.txt</file>
         <file>info/zonas_spawn2.txt</file>
+        <file>info/colisiones1.txt</file>
+        <file>info/zona_bloqueada1.txt</file>
+        <file>info/zona_bloqueada2.txt</file>
     </qresource>
 </RCC>

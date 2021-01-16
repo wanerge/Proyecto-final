@@ -4,6 +4,7 @@ mapa::mapa(QString mundo_)
 {
     contenedor = new QVector<colisiones *>;
     zonaspawn = new QVector<colisiones *>;
+    zona_blocked = new QVector<colisiones *>;
     mundo = new QGraphicsScene;
     mundo->setSceneRect(0,0,4800,1230);
     mundo->setBackgroundBrush(QBrush(QImage(mundo_)));
@@ -47,6 +48,11 @@ void mapa::carga_Datos(QString nombre_archivo, QVector<colisiones *> *container)
 //    for(auto it : *container){
 //        mundo->addItem(it);
 //    }
+}
+
+QVector<colisiones *> *mapa::getZona_blocked() const
+{
+    return zona_blocked;
 }
 
 QVector<colisiones *> *mapa::getContenedor() const

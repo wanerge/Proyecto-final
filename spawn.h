@@ -18,8 +18,9 @@ public:
     void carga_Datos(QString nombre_archivo);
     void generador(QString mob, QString imagsource);
     void zona_activa(int i);
-
+    int mundo=1;
     QVector<enemigos *> *getEnemigos() const;
+    bool activo=false;
 
 private:
     QMap<QString, float *> *infoenemy;
