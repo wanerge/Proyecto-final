@@ -19,6 +19,7 @@
 #include "colisiones.h"
 #include "life.h"
 #include "spawn.h"
+#include "bullets_enemy.h"
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -74,11 +75,14 @@ private:
     //Spawn de enemigos
     spawn *Spawner;
 
-    QTimer *timer1, *timer2;
+    QTimer *timer1, *timer2, *timer3;
 
 public slots:
     //reposaito invoca el qevent de tecla 0
     void personajes_activos();
+
+    //funciones para el disparo basico de los enemigos
+    void generar_disparo();
 
 private slots:
     void on_boton_Nueva_clicked();

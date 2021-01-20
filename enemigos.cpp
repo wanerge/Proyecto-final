@@ -1,13 +1,19 @@
 #include "enemigos.h"
 
-enemigos::enemigos(QString direccion_img, float ancho_, float alto_, float total_columnas_, float posx, float posy,QObject *parent) : QObject(parent)
+enemigos::enemigos(QString direccion_img, float ancho_, float alto_, float total_columnas_, float vida_, float velocidad_, QString disparo_, float posx, float posy,QObject *parent) : QObject(parent)
 {
     total_columnas = total_columnas_;
     ancho = ancho_;
     alto = alto_;
+    vida = vida_;
+    velocidad = velocidad_;
+    Disparo = disparo_;
+
     img = new QPixmap(direccion_img);
     timer = new QTimer;
+
     timer->start(60);
+
     connect(timer, &QTimer::timeout, this, &enemigos::Actualizacion);
     setPos(posx,posy);
 }
@@ -20,6 +26,9 @@ void enemigos::Actualizacion()
     }
     this->update(ancho/2, alto/2, ancho, alto);
 
+//    if (Disparo == "no") {
+//        movimiento();
+//    }
     movimiento();
 }
 
@@ -27,40 +36,68 @@ void enemigos::movimiento()
 {
     if(y() < playery and x()-playerx >-10 and x()-playerx < 10){
         filas = 0;
-        down();
+        //down();
+        if (Disparo == "no") {
+            down();
+        }
     }
     else if(y() > playery and x()-playerx >-10 and x()-playerx < 10){
         filas = alto;
-        up();
+        //up();
+        if (Disparo == "no") {
+            up();
+        }
     }
     else if(x() > playerx and y()-playery > -10 and y()-playery < 10){
         filas = alto*3;
-        left();
+        //left();
+        if (Disparo == "no") {
+            left();
+        }
     }
     else if(x() < playerx and y()-playery > -10 and y()-playery < 10){
         filas = alto*2;
-        right();
+        //right();
+        if (Disparo == "no") {
+            right();
+        }
     }
     else {
         if (x() < playerx and y() < playery) {
             filas = alto*2;
-            right();
-            down();
+            //right();
+            //down();
+            if (Disparo == "no") {
+                right();
+                down();
+            }
         }
         else if (x() > playerx and y() < playery) {
             filas = alto*3;
-            left();
-            down();
+            //left();
+            //down();
+            if (Disparo == "no") {
+                left();
+                down();
+            }
         }
         else if (x() < playerx and y() > playery) {
             filas = alto*2;
-            right();
-            up();
+//            right();
+//            up();
+            if (Disparo == "no") {
+                right();
+                up();
+            }
         }
         else if (x() > playerx and y() > playery) {
             filas = alto*3;
-            left();
-            up();
+//            left();
+//            up();
+            if (Disparo == "no") {
+                left();
+                up();
+            }
         }
     }
 }
