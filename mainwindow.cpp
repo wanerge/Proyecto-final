@@ -471,8 +471,6 @@ void MainWindow::colision_left(personaje_principal *person)
             person->right();
         }
     }
-
-
 }
 
 void MainWindow::colision_right(personaje_principal *person)
@@ -494,9 +492,8 @@ void MainWindow::colision_spawn(personaje_principal *person)
 {
     if (Spawner->getEnemigos()->isEmpty()) {
         if(Spawner->activo){
-            //escenario->getMundo()->removeItem(escenario->getZona_blocked()->back());
             escenario->getZona_blocked()->pop_back();
-            Spawner->activo=false;
+            Spawner->activo = false;
         }
         for (int i = 0 ;i < escenario->getZonaspawn()->size();i++) {
             if(person->collidesWithItem(escenario->getZonaspawn()->at(i))){
@@ -551,6 +548,23 @@ void MainWindow::colision_spawn(personaje_principal *person)
     }
 }
 
+void MainWindow::generar_disparo()
+{
+    for (auto it : *Spawner->getEnemigos()){
+        if (personaje_pri) {
+            if (it->Disparo != "no") {
+                bullets_enemy *Bullet = new bullets_enemy(it->Disparo, 17, 17, 3, personaje1);
+                Bullet->setPos(it->x()+15, it->y()+15);
+                escenario->getMundo()->addItem(Bullet);
+            }
+        }
+        else if (personaje_seg) {
+            //key_release(personaje2, timer2, evento);
+        }
+
+    }
+}
+
 void MainWindow::on_boton_Nueva_clicked()
 {
     inicio->modo_dificultad();
@@ -592,6 +606,10 @@ void MainWindow::on_boton_Facil_clicked()
     personaje_seg = false;
 
     estado = "easy";
+
+    timer3 = new QTimer;
+    timer3->start(2300);
+    connect(timer3, &QTimer::timeout, this, &MainWindow::generar_disparo);
 }
 
 void MainWindow::on_boton_Dificil_clicked()
@@ -616,6 +634,7 @@ void MainWindow::on_boton_Dificil_clicked()
 
     escenario->carga_Datos(":/info/colisiones1.txt", escenario->getContenedor());
     escenario->carga_Datos(":/info/zonas_spawn.txt", escenario->getZonaspawn());
+    escenario->carga_Datos(":/info/zona_bloqueada1.txt",escenario->getZona_blocked());
     escenario->getMundo()->addItem(personaje1);
     escenario->getMundo()->addWidget(personaje1->barra_personaje);
 
@@ -626,6 +645,10 @@ void MainWindow::on_boton_Dificil_clicked()
     personaje_seg = false;
 
     estado = "hard";
+
+    timer3 = new QTimer;
+    timer3->start(2300);
+    connect(timer3, &QTimer::timeout, this, &MainWindow::generar_disparo);
 }
 
 void MainWindow::on_boton_Multi_clicked()
@@ -716,6 +739,7 @@ void MainWindow::on_boton_Reiniciar_clicked()
     delete pausa;
     if (estado == "pause_N_easy" || estado == "pause_N_hard") {
         view->resetTransform();
+        delete timer3;
         delete timer1;
         delete vidas;
         delete personaje1;
@@ -733,6 +757,7 @@ void MainWindow::on_boton_Reiniciar_clicked()
     }
     else if (estado == "pause_M") {
         view->resetTransform();
+        delete timer3;
         delete timer1;
         delete timer2;
         delete vidas;
@@ -751,6 +776,7 @@ void MainWindow::on_boton_Menu_clicked()
     delete pausa;
     if (estado == "pause_N_easy" || estado == "pause_N_hard") {
         view->resetTransform();
+        delete timer3;
         delete timer1;
         delete vidas;
         delete personaje1;
@@ -759,6 +785,7 @@ void MainWindow::on_boton_Menu_clicked()
     }
     else if (estado == "pause_M") {
         view->resetTransform();
+        delete timer3;
         delete timer1;
         delete timer2;
         delete vidas;

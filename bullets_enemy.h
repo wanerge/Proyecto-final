@@ -1,20 +1,21 @@
-#ifndef ENEMIGOS_H
-#define ENEMIGOS_H
+#ifndef BULLETS_ENEMY_H
+#define BULLETS_ENEMY_H
 
 #include <QObject>
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QTimer>
 #include <QPixmap>
+#include <QGraphicsScene>
 #include <math.h>
-#include <QDebug>
+#include "personaje_principal.h"
 
-class enemigos : public QObject, public QGraphicsItem
+class bullets_enemy : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit enemigos(QString direccion_img, float ancho_, float alto_, float total_columnas_, float vida_, float velocidad_, QString disparo_, float posx, float posy,QObject *parent = nullptr);
-    ~enemigos();
+    explicit bullets_enemy(QString direccion_img, float ancho_, float alto_, float total_columnas_, personaje_principal *personaje_, QObject *parent = nullptr);
+    ~bullets_enemy();
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -24,20 +25,15 @@ public:
     void left();
     void right();
 
-    void movimiento();
-
-    void seguir(float playerx_,float playery_);
-
-    QString Disparo;
-    float velocidad = 5;
+    float velocidad = 3;
     float filas = 0, columnas = 0, total_columnas;
-    float vida = 90;
 
 private:
+    personaje_principal *personaje;
     QPixmap *img;
     QTimer *timer;
     float ancho, alto;
-    float playerx,playery;
+    float pos_final_x , pos_final_y;
 
 signals:
 
@@ -46,4 +42,4 @@ public slots:
 
 };
 
-#endif // ENEMIGOS_H
+#endif // BULLETS_ENEMY_H

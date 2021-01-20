@@ -16,7 +16,7 @@ public:
     ~spawn();
 
     void carga_Datos(QString nombre_archivo);
-    void generador(QString mob, QString imagsource);
+    void generador(QString mob, QString imagsource, QString disparo);
     void zona_activa(int i);
     int mundo=1;
     QVector<enemigos *> *getEnemigos() const;
@@ -28,8 +28,6 @@ private:
 
     float *datos;
     QVector<int> numero_datos;
-
-    int mundo = 1;
 
 signals:
 
