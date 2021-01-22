@@ -17,11 +17,13 @@ SOURCES += \
     enemigos.cpp \
     interfaz_inicio.cpp \
     interfaz_pausa.cpp \
+    jefe.cpp \
     life.cpp \
     main.cpp \
     mainwindow.cpp \
     mapa.cpp \
     personaje_principal.cpp \
+    powerboss.cpp \
     spawn.cpp
 
 HEADERS += \
@@ -32,10 +34,12 @@ HEADERS += \
     enemigos.h \
     interfaz_inicio.h \
     interfaz_pausa.h \
+    jefe.h \
     life.h \
     mainwindow.h \
     mapa.h \
     personaje_principal.h \
+    powerboss.h \
     spawn.h
 
 FORMS += \

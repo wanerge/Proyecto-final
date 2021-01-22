@@ -490,7 +490,7 @@ void MainWindow::colision_right(personaje_principal *person)
 
 void MainWindow::colision_spawn(personaje_principal *person)
 {
-    if (Spawner->getEnemigos()->isEmpty()) {
+    if (Spawner->getEnemigos()->isEmpty() && Spawner->getJefes()->isEmpty()) {
         if(Spawner->activo){
             escenario->getZona_blocked()->pop_back();
             Spawner->activo = false;
@@ -500,6 +500,10 @@ void MainWindow::colision_spawn(personaje_principal *person)
                 Spawner->zona_activa(i);
                 for(auto it : *Spawner->getEnemigos()){
                     escenario->getMundo()->addItem(it);
+                }
+                for(auto it : *Spawner->getJefes()){
+                    escenario->getMundo()->addItem(it);
+
                 }
                 //escenario->getZonaspawn()->removeAt(i);
             }
@@ -545,7 +549,9 @@ void MainWindow::colision_spawn(personaje_principal *person)
                 it->seguir(person->x(),person->y());
             }
         }
+
     }
+
 }
 
 void MainWindow::generar_disparo()
@@ -560,6 +566,32 @@ void MainWindow::generar_disparo()
         }
         else if (personaje_seg) {
             //key_release(personaje2, timer2, evento);
+        }
+
+    }
+    for (auto it: *Spawner->getJefes()){
+        if(it->movement == 1){
+            Powerboss *fisica = new Powerboss(":/Imagenes/disparos/roca1.png",18,18,1,it->x(),it->y(),1);
+            escenario->getMundo()->addItem(fisica);
+        }
+        else if(it->movement == 2){
+            Powerboss *fisica = new Powerboss(":/Imagenes/disparos/burbuja.png",17,17,6,it->x()+70,it->y()+85,2);
+            escenario->getMundo()->addItem(fisica);
+        }
+        else if(it->movement == 3){
+            Powerboss *fisica = new Powerboss(":/Imagenes/disparos/ojo.png",20,20,3,it->x()+40,it->y()+40,3);
+            escenario->getMundo()->addItem(fisica);
+            if(cuentapasos > 100){
+                it->playerx = personaje1->x();
+                it->playery = personaje1->y();
+                cuentapasos = 1;
+            }
+            cuentapasos+=10;
+
+        }
+        else if(it->movement == 4){
+            Powerboss *fisica = new Powerboss(":/Imagenes/disparos/bola_roja.png",17,17,3,it->x(),it->y(),4);
+            escenario->getMundo()->addItem(fisica);
         }
 
     }
@@ -590,7 +622,6 @@ void MainWindow::on_boton_Facil_clicked()
     view->setScene(escenario->getMundo());
     view->scale(1.7,1.4);
     view->centerOn(personaje1->x(), personaje1->y());
-
     Spawner->carga_Datos(":/info/enemy_info.txt");
 
     escenario->carga_Datos(":/info/colisiones1.txt", escenario->getContenedor());

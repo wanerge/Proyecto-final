@@ -7,6 +7,7 @@
 #include <QTextStream>
 #include "enemigos.h"
 #include <QDebug>
+#include "jefe.h"
 
 class spawn : public QObject
 {
@@ -21,10 +22,12 @@ public:
     int mundo=1;
     QVector<enemigos *> *getEnemigos() const;
     bool activo=false;
+    QVector<jefe *> *getJefes() const;
 
 private:
     QMap<QString, float *> *infoenemy;
     QVector<enemigos *> *Enemigos;
+    QVector<jefe *> *Jefes;
 
     float *datos;
     QVector<int> numero_datos;
