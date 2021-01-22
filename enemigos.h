@@ -33,9 +33,10 @@ public:
     float filas = 0, columnas = 0, total_columnas;
     float vida = 90;
 
+    QTimer *timer;
+
 private:
     QPixmap *img;
-    QTimer *timer;
     float ancho, alto;
     float playerx,playery;
 

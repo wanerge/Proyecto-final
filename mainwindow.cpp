@@ -80,24 +80,28 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
             connect(inicio->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Salir_clicked);
         }
         else if (estado == "hard" || estado == "easy") {
-            pausa = new interfaz_pausa(false);
-            this->setCentralWidget(pausa->getWid());
-            connect(pausa->getBoton_Guardar(), &QPushButton::clicked , this, &MainWindow::on_boton_Guardar_clicked);
-            connect(pausa->getBoton_Reiniciar(), &QPushButton::clicked , this, &MainWindow::on_boton_Reiniciar_clicked);
-            connect(pausa->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Menu_clicked);
-            if (estado == "hard") {
-                estado = "pause_N_hard";
-            }
-            else {
-                estado = "pause_N_easy";
+            if (Spawner->getEnemigos()->isEmpty()) {
+                pausa = new interfaz_pausa(false);
+                this->setCentralWidget(pausa->getWid());
+                connect(pausa->getBoton_Guardar(), &QPushButton::clicked , this, &MainWindow::on_boton_Guardar_clicked);
+                connect(pausa->getBoton_Reiniciar(), &QPushButton::clicked , this, &MainWindow::on_boton_Reiniciar_clicked);
+                connect(pausa->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Menu_clicked);
+                if (estado == "hard") {
+                    estado = "pause_N_hard";
+                }
+                else {
+                    estado = "pause_N_easy";
+                }
             }
         }
         else if (estado == "multi") {
-            pausa = new interfaz_pausa(true);
-            this->setCentralWidget(pausa->getWid());
-            connect(pausa->getBoton_Reiniciar(), &QPushButton::clicked , this, &MainWindow::on_boton_Reiniciar_clicked);
-            connect(pausa->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Menu_clicked);
-            estado = "pause_M";
+            if (Spawner->getEnemigos()->isEmpty()) {
+                pausa = new interfaz_pausa(true);
+                this->setCentralWidget(pausa->getWid());
+                connect(pausa->getBoton_Reiniciar(), &QPushButton::clicked , this, &MainWindow::on_boton_Reiniciar_clicked);
+                connect(pausa->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Menu_clicked);
+                estado = "pause_M";
+            }
         }
         else if(estado == "help"){
             delete ayuda;
@@ -149,13 +153,15 @@ void MainWindow::key_press(personaje_principal *person, QTimer *time, QKeyEvent 
             }
         }
         else if ((evento->key() == Qt::Key_Space) && (!evento->isAutoRepeat())) {
-            bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getEnemigos());
-            direccion_disparo(person);
-            escenario->getMundo()->addItem(bullet);
-            time->stop();
-            person->ispush = true;
-            person->columnas = person->ancho*4;
-            person->max_columnas = 7;
+            if (person->estado == "vivo") {
+                bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getEnemigos());
+                direccion_disparo(person);
+                escenario->getMundo()->addItem(bullet);
+                time->stop();
+                person->ispush = true;
+                person->columnas = person->ancho*4;
+                person->max_columnas = 7;
+            }
         }
     }
     else if (person == personaje2){
@@ -184,13 +190,15 @@ void MainWindow::key_press(personaje_principal *person, QTimer *time, QKeyEvent 
             }
         }
         else if ((evento->key() == Qt::Key_P) && (!evento->isAutoRepeat())) {
-            bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getEnemigos());
-            direccion_disparo(person);
-            escenario->getMundo()->addItem(bullet);
-            time->stop();
-            person->ispush = true;
-            person->columnas = person->ancho*4;
-            person->max_columnas = 7;
+            if (person->estado == "vivo") {
+                bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getEnemigos());
+                direccion_disparo(person);
+                escenario->getMundo()->addItem(bullet);
+                time->stop();
+                person->ispush = true;
+                person->columnas = person->ancho*4;
+                person->max_columnas = 7;
+            }
         }
     }
 }
@@ -356,10 +364,89 @@ void MainWindow::direccion_disparo(personaje_principal *person)
 void MainWindow::personajes_activos()
 {
     if (personaje_pri) {
-        movimiento_personaje(personaje1);
+        if (personaje1->estado == "vivo") {
+            movimiento_personaje(personaje1);
+        }
+        else {
+            timer1->start(40);
+            timer3->start();
+            personaje1->filas = 0;
+            personaje1->estado = "vivo";
+            for(auto it : *Spawner->getEnemigos()){
+                it->timer->start();
+            }
+            personaje1->vida = 1000;
+            personaje1->barra_personaje->setValue(personaje1->vida);
+        }
+        reinicio_muerte(personaje1, vidas1, timer1);
     }
     if (personaje_seg) {
-        movimiento_personaje(personaje2);
+        if (personaje2->estado == "vivo") {
+            movimiento_personaje(personaje2);
+        }
+        else {
+            timer2->start(70);
+            timer3->start();
+            personaje2->filas = 0;
+            personaje2->estado = "vivo";
+            for(auto it : *Spawner->getEnemigos()){
+                it->timer->start();
+            }
+            personaje2->vida = 1000;
+            personaje2->barra_personaje->setValue(personaje2->vida);
+        }
+        reinicio_muerte(personaje2, vidas2, timer2);
+    }
+}
+
+void MainWindow::reinicio_muerte(personaje_principal *person, life *vidas, QTimer *time)
+{
+    if (person->vida <= 0) {
+        vidas->eliminar_vida();
+        if (person == personaje1) {
+            personaje_pri = false;
+        }
+        else {
+            personaje_seg = false;
+        }
+        if (!vidas->getVidas()->isEmpty()) {
+            person->estado = "muerto";
+            time->start(1300);
+            timer3->stop();
+            person->filas = 140;
+            for(auto it : *Spawner->getEnemigos()){
+                it->timer->stop();
+            }
+            if (person == personaje1) {
+                personaje_pri = true;
+            }
+            else {
+                personaje_seg = true;
+            }
+        }
+        else {
+            person->barra_personaje->setVisible(false);
+            escenario->getMundo()->removeItem(person);
+            if (estado == "hard" || estado == "easy") {
+                pausa = new interfaz_pausa(true);
+                this->setCentralWidget(pausa->getWid());
+                connect(pausa->getBoton_Reiniciar(), &QPushButton::clicked , this, &MainWindow::on_boton_Reiniciar_clicked);
+                connect(pausa->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Menu_clicked);
+                if (estado == "hard") {
+                    estado = "pause_N_hard";
+                }
+                else {
+                    estado = "pause_N_easy";
+                }
+            }
+            else if (estado == "multi" && !personaje_pri && !personaje_seg) {
+                pausa = new interfaz_pausa(true);
+                this->setCentralWidget(pausa->getWid());
+                connect(pausa->getBoton_Reiniciar(), &QPushButton::clicked , this, &MainWindow::on_boton_Reiniciar_clicked);
+                connect(pausa->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Menu_clicked);
+                estado = "pause_M";
+            }
+        }
     }
 }
 
@@ -615,7 +702,7 @@ void MainWindow::on_boton_Facil_clicked()
 
     timer1 = new QTimer;
     personaje1 = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
-    vidas = new life(this, 3, 100);
+    vidas1 = new life(this, 3, 100, 0, 0);
 
     Spawner = new spawn();
 
@@ -653,7 +740,7 @@ void MainWindow::on_boton_Dificil_clicked()
 
     timer1 = new QTimer;
     personaje1 = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
-    vidas = new life(this, 3, 100);
+    vidas1 = new life(this, 1, 33, 0, 0);
 
     Spawner = new spawn();
 
@@ -690,6 +777,7 @@ void MainWindow::on_boton_Multi_clicked()
 
     timer2 = new QTimer;
     personaje2 = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0);
+    vidas2 = new life(this, 1, 33, 1332,0);
 
     escenario->getMundo()->addItem(personaje2);
     escenario->getMundo()->addWidget(personaje2->barra_personaje);
@@ -772,7 +860,7 @@ void MainWindow::on_boton_Reiniciar_clicked()
         view->resetTransform();
         delete timer3;
         delete timer1;
-        delete vidas;
+        delete vidas1;
         delete personaje1;
         delete escenario;
         delete Spawner;
@@ -791,7 +879,8 @@ void MainWindow::on_boton_Reiniciar_clicked()
         delete timer3;
         delete timer1;
         delete timer2;
-        delete vidas;
+        delete vidas1;
+        delete vidas2;
         delete personaje1;
         delete personaje2;
         delete escenario;
@@ -809,7 +898,7 @@ void MainWindow::on_boton_Menu_clicked()
         view->resetTransform();
         delete timer3;
         delete timer1;
-        delete vidas;
+        delete vidas1;
         delete personaje1;
         delete escenario;
         delete Spawner;
@@ -819,7 +908,8 @@ void MainWindow::on_boton_Menu_clicked()
         delete timer3;
         delete timer1;
         delete timer2;
-        delete vidas;
+        delete vidas1;
+        delete vidas2;
         delete personaje1;
         delete personaje2;
         delete escenario;

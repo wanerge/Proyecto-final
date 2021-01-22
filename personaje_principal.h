@@ -25,6 +25,8 @@ public:
     char letra1;
     char letra2;
 
+    QString estado = "vivo";
+
     QProgressBar *barra_personaje;
 
     //funcion movimiento ascendente personaje

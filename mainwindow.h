@@ -51,9 +51,8 @@ public:
     void colision_right(personaje_principal *person);
     void colision_spawn(personaje_principal *person);
     void key_press(personaje_principal *person, QTimer *time, QKeyEvent *evento);
-    void key_release(personaje_principal *person, QTimer *time, QKeyEvent *evento);
-
-    bool personaje_pri, personaje_seg;
+    void key_release(personaje_principal *person, QTimer *time, QKeyEvent *evento);    
+    void reinicio_muerte(personaje_principal *person, life *vidas, QTimer *time);
 
     //carga el menu principal
     void menu();
@@ -69,8 +68,9 @@ private:
     QString estado;
 
     //se crea personaje principal
+    bool personaje_pri, personaje_seg;
     personaje_principal *personaje1, *personaje2;
-    life *vidas;
+    life *vidas1, *vidas2;
     bullets *bullet;
 
     //Spawn de enemigos

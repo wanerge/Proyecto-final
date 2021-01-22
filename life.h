@@ -9,10 +9,12 @@
 class life
 {
 public:
-    life(QMainWindow *s, int num_vidas, int max_x_view);
+    life(QMainWindow *s, int num_vidas, int max_x_view, int pos_x, int pos_y);
     ~life();
 
     void eliminar_vida();
+
+    QVector<QGraphicsPixmapItem *> *getVidas() const;
 
 private:
     QGraphicsView *view;
