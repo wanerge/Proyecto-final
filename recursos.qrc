@@ -47,5 +47,8 @@
         <file>info/colisiones1.txt</file>
         <file>info/zona_bloqueada1.txt</file>
         <file>info/zona_bloqueada2.txt</file>
+        <file>Imagenes/disparos/roca1.png</file>
+        <file>Imagenes/Enemigos/mundo1/cangrejo clone.png</file>
+        <file>Imagenes/disparos/bola_roja.png</file>
     </qresource>
 </RCC>

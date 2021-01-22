@@ -5,6 +5,7 @@ spawn::spawn(QObject *parent) : QObject(parent)
     //carga_Datos(":/info/enemy_info.txt");
     infoenemy = new QMap<QString, float *>;
     Enemigos = new QVector<enemigos *>;
+    Jefes = new QVector<jefe*>;
 }
 
 void spawn::carga_Datos(QString nombre_archivo)
@@ -48,8 +49,22 @@ void spawn::carga_Datos(QString nombre_archivo)
 void spawn::generador(QString mob, QString imagsource, QString disparo)
 {
     QMap<QString, float *>::iterator i = infoenemy->find(mob);
-    for (int num_enemigo = 0, indice_dato = 6; num_enemigo < i.value()[3] ; num_enemigo++, indice_dato+=2) {
-        Enemigos->push_back(new enemigos(imagsource,i.value()[0], i.value()[1],i.value()[2],i.value()[4],i.value()[5],disparo,i.value()[indice_dato],i.value()[indice_dato+1]));
+    if(mob == "Golem" ){
+        Jefes->push_back(new jefe(imagsource,1,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6]));
+    }
+    else if(mob == "DonCangrejo"){
+        Jefes->push_back(new jefe(imagsource,2,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6]));
+    }
+    else if(mob == "Toro"){
+        Jefes->push_back(new jefe(imagsource,3,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6]));
+    }
+    else if(mob == "Belcebu"){
+        Jefes->push_back(new jefe(imagsource,4,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6]));
+    }
+    else{
+        for (int num_enemigo = 0, indice_dato = 6; num_enemigo < i.value()[3] ; num_enemigo++, indice_dato+=2) {
+            Enemigos->push_back(new enemigos(imagsource,i.value()[0], i.value()[1],i.value()[2],i.value()[4],i.value()[5],disparo,i.value()[indice_dato],i.value()[indice_dato+1]));
+        }
     }
     if(i.value()[3] != 0){
         activo = true;
@@ -73,23 +88,30 @@ void spawn::zona_activa(int i)
             generador("Aranas",":/Imagenes/Enemigos/mundo1/1arana.png", ":/Imagenes/disparos/bola_amarilla.png");
         }
         else if(i == 4){
-            generador("Motosierra",":/Imagenes/Enemigos/mundo1/2motosierra.png", "no");
+            generador("Golem",":/Imagenes/Enemigos/mundo1/1Golem.png","no");
         }
         else if(i == 5){
-            generador("Carnivora",":/Imagenes/Enemigos/mundo1/2planta_carnivora.png", ":/Imagenes/disparos/bola_amarilla.png");
+            generador("Motosierra",":/Imagenes/Enemigos/mundo1/2motosierra.png", "no");
         }
         else if(i == 6){
-            generador("Cocodrilo",":/Imagenes/Enemigos/mundo1/2Cocodrilo.png", "no");
+            generador("Carnivora",":/Imagenes/Enemigos/mundo1/2planta_carnivora.png", ":/Imagenes/disparos/bola_amarilla.png");
         }
         else if(i == 7){
-            generador("Dragonagua",":/Imagenes/Enemigos/mundo1/3Dragon_agua.png", ":/Imagenes/disparos/bola_amarilla.png");
+            generador("Cocodrilo",":/Imagenes/Enemigos/mundo1/2Cocodrilo.png", "no");
         }
         else if(i == 8){
-            generador("Cangrejo",":/Imagenes/Enemigos/mundo1/4mini_cangrejo.png", "no");
+            generador("Dragonagua",":/Imagenes/Enemigos/mundo1/3Dragon_agua.png", ":/Imagenes/disparos/bola_amarilla.png");
         }
         else if(i == 9){
+            generador("Cangrejo",":/Imagenes/Enemigos/mundo1/4mini_cangrejo.png", "no");
+        }
+        else if(i == 10){
             generador("Urgot",":/Imagenes/Enemigos/mundo1/4Urgot.png", ":/Imagenes/disparos/bola_amarilla.png");
         }
+        else if(i == 11){
+            generador("DonCangrejo",":/Imagenes/Enemigos/mundo1/cangrejo clone.png","no");
+        }
+
     }
     else if(mundo == 2){
         if(i == 0){
@@ -105,25 +127,31 @@ void spawn::zona_activa(int i)
             generador("Genio",":/Imagenes/Enemigos/mundo2/genio.png", ":/Imagenes/disparos/bola_amarilla.png");
         }
         else if(i == 4){
-            generador("Momia",":/Imagenes/Enemigos/mundo2/Momia .png", "no");
+            generador("Toro",":/Imagenes/Enemigos/mundo2/Toro.png","no");
         }
         else if(i == 5){
-            generador("Dracula2",":/Imagenes/Enemigos/mundo2/Dracula.png", "no");
+            generador("Momia",":/Imagenes/Enemigos/mundo2/Momia .png", "no");
         }
         else if(i == 6){
-            generador("Gargola",":/Imagenes/Enemigos/mundo2/Gargola.png", "no");
+            generador("Dracula2",":/Imagenes/Enemigos/mundo2/Dracula.png", "no");
         }
         else if(i == 7){
-            generador("Esqueleto2",":/Imagenes/Enemigos/mundo2/Esqueleticoxd.png", "no");
+            generador("Gargola",":/Imagenes/Enemigos/mundo2/Gargola.png", "no");
         }
         else if(i == 8){
-            generador("Drakebone",":/Imagenes/Enemigos/mundo2/Drago_Esqueleto.png", ":/Imagenes/disparos/bola_amarilla.png");
+            generador("Esqueleto2",":/Imagenes/Enemigos/mundo2/Esqueleticoxd.png", "no");
         }
         else if(i == 9){
-            generador("Diabloculon",":/Imagenes/Enemigos/mundo2/Demonio_cajaxd.png", ":/Imagenes/disparos/bola_amarilla.png");
+            generador("Drakebone",":/Imagenes/Enemigos/mundo2/Drago_Esqueleto.png", ":/Imagenes/disparos/bola_amarilla.png");
         }
         else if(i == 10){
+            generador("Diabloculon",":/Imagenes/Enemigos/mundo2/Demonio_cajaxd.png", ":/Imagenes/disparos/bola_amarilla.png");
+        }
+        else if(i == 11){
             generador("Diablo",":/Imagenes/Enemigos/mundo2/diablo_enano.png", "no");
+        }
+        else if(i == 12){
+            generador("Belcebu",":/Imagenes/Enemigos/mundo2/demonio_jefe.png", "no");
         }
     }
 }
@@ -131,6 +159,11 @@ void spawn::zona_activa(int i)
 QVector<enemigos *> *spawn::getEnemigos() const
 {
     return Enemigos;
+}
+
+QVector<jefe *> *spawn::getJefes() const
+{
+    return Jefes;
 }
 
 spawn::~spawn()

@@ -20,6 +20,7 @@
 #include "life.h"
 #include "spawn.h"
 #include "bullets_enemy.h"
+#include "powerboss.h"
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -74,8 +75,9 @@ private:
 
     //Spawn de enemigos
     spawn *Spawner;
-
     QTimer *timer1, *timer2, *timer3;
+
+    int cuentapasos = 0;
 
 public slots:
     //reposaito invoca el qevent de tecla 0
