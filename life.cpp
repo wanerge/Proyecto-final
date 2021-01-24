@@ -7,7 +7,6 @@ life::life(QMainWindow *s, int num_vidas, int max_x_view, int pos_x, int pos_y)
     vidas = new QVector<QGraphicsPixmapItem *>;
 
     view->setGeometry(pos_x,pos_y,max_x_view,32);
-    //view->resize(max_x_view, 32);
     view->setScene(escena);
     view->show();
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

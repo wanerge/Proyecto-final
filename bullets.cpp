@@ -1,12 +1,29 @@
 #include "bullets.h"
 
-bullets::bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<enemigos*> *enemy, QObject *parent) : QObject(parent)
+bullets::bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<enemigos *> *enemy, QObject *parent) : QObject(parent)
 {
     total_columnas = total_columnas_;
     ancho = ancho_;
     alto = alto_;
 
     Enemigos = enemy;
+
+    img = new QPixmap(direccion_img);
+    timer = new QTimer;
+
+    timer->start(30);
+
+    connect(timer, &QTimer::timeout, this, &bullets::Actualizacion);
+}
+
+bullets::bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<jefe *> *enemy, QObject *parent) : QObject(parent)
+{
+    total_columnas = total_columnas_;
+    ancho = ancho_;
+    alto = alto_;
+
+    Jefe = enemy;
+    tipo_enemy = false;
 
     img = new QPixmap(direccion_img);
     timer = new QTimer;
@@ -52,17 +69,33 @@ void bullets::Actualizacion()
     }
 
     if (distancia_max > 100) {
-        for (int i = 0; i < Enemigos->size() ; i++ ) {
-            if (this->collidesWithItem(Enemigos->at(i))) {
-                distancia_max = 120;
-                Enemigos->at(i)->vida -= 30;
-                if (Enemigos->at(i)->vida <= 0) {
-                    scene()->removeItem(Enemigos->at(i));
-                    Enemigos->removeAt(i);
+        if (tipo_enemy) {
+            for (int i = 0; i < Enemigos->size() ; i++ ) {
+                if (this->collidesWithItem(Enemigos->at(i))) {
+                    distancia_max = 120;
+                    Enemigos->at(i)->vida -= 30;
+                    if (Enemigos->at(i)->vida <= 0) {
+                        scene()->removeItem(Enemigos->at(i));
+                        Enemigos->removeAt(i);
+                    }
+                }
+            }
+        }
+        else {
+            for (int i = 0; i < Jefe->size() ; i++ ) {
+                if (this->collidesWithItem(Jefe->at(i))) {
+                    distancia_max = 120;
+                    Jefe->at(i)->vida -= 30;
                 }
             }
         }
     }
+
+    columnas += ancho;
+    if (columnas >= (ancho*total_columnas)){
+        columnas = 0;
+    }
+    this->update(ancho/2, alto/2, ancho, alto);
 
     distancia_max -= 20;
     if (distancia_max == 100) {
@@ -72,11 +105,6 @@ void bullets::Actualizacion()
         scene()->removeItem(this);
         delete this;
     }
-    columnas += ancho;
-    if (columnas >= (ancho*total_columnas)){
-        columnas = 0;
-    }
-    this->update(ancho/2, alto/2, ancho, alto);
 }
 
 QRectF bullets::boundingRect() const

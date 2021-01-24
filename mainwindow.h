@@ -21,6 +21,7 @@
 #include "spawn.h"
 #include "bullets_enemy.h"
 #include "powerboss.h"
+#include "transiciones.h"
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -57,6 +58,11 @@ public:
     //carga el menu principal
     void menu();
 
+    void cargar_mundo1();
+    void cargar_mundo2();
+
+    void cargar_personajes(int persona, float pos_x, float pos_y, int vida_total, int num_vidas, int milisegundos);
+
 private:
     Ui::MainWindow *ui;
 
@@ -66,18 +72,21 @@ private:
     QGraphicsScene *ayuda;
     mapa *escenario;
     QString estado;
+    int mundo;
+    bool crear_personaje;
 
     //se crea personaje principal
     bool personaje_pri, personaje_seg;
     personaje_principal *personaje1, *personaje2;
     life *vidas1, *vidas2;
     bullets *bullet;
+    QVector<personaje_principal *> personajes;
 
     //Spawn de enemigos
     spawn *Spawner;
     QTimer *timer1, *timer2, *timer3;
 
-    int cuentapasos = 0;
+    transiciones *transicion;
 
 public slots:
     //reposaito invoca el qevent de tecla 0
@@ -85,6 +94,9 @@ public slots:
 
     //funciones para el disparo basico de los enemigos
     void generar_disparo();
+
+    //funcion para ver una pequeña transicion del primer mundo al segundo
+    void cambiar_mundo();
 
 private slots:
     void on_boton_Nueva_clicked();

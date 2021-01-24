@@ -8,6 +8,7 @@
 #include "enemigos.h"
 #include <QDebug>
 #include "jefe.h"
+#include "powerboss.h"
 
 class spawn : public QObject
 {
@@ -24,10 +25,13 @@ public:
     bool activo=false;
     QVector<jefe *> *getJefes() const;
 
+    QVector<Powerboss *> *getEyes() const;
+
 private:
     QMap<QString, float *> *infoenemy;
     QVector<enemigos *> *Enemigos;
     QVector<jefe *> *Jefes;
+    QVector<Powerboss *> *eyes;
 
     float *datos;
     QVector<int> numero_datos;

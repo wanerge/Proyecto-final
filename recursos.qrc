@@ -50,5 +50,6 @@
         <file>Imagenes/disparos/roca1.png</file>
         <file>Imagenes/Enemigos/mundo1/cangrejo clone.png</file>
         <file>Imagenes/disparos/bola_roja.png</file>
+        <file>Imagenes/transicion_mundo2.png</file>
     </qresource>
 </RCC>

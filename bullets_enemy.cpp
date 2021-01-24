@@ -1,13 +1,13 @@
 #include "bullets_enemy.h"
 
-bullets_enemy::bullets_enemy(QString direccion_img, float ancho_, float alto_, float total_columnas_, personaje_principal *personaje_, QObject *parent) : QObject(parent)
+bullets_enemy::bullets_enemy(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<personaje_principal *> personajes_, QObject *parent) : QObject(parent)
 {
     total_columnas = total_columnas_;
     ancho = ancho_;
     alto = alto_;
-    personaje = personaje_;
-    pos_final_x = personaje->x()+16;
-    pos_final_y = personaje->y()+16;
+    personajes = personajes_;
+    pos_final_x = personajes.first()->x()+16;
+    pos_final_y = personajes.first()->y()+16;
 
     img = new QPixmap(direccion_img);
     timer = new QTimer;
@@ -32,45 +32,12 @@ void bullets_enemy::Actualizacion()
         up();
     }
 
-//    if (x()-pos_final_x > 0) {
-//        right();
-//    }
-//    else {
-//        left();
-//    }
-//    if (pos_final_y > y()) {
-//        down();
-//    }
-//    else {
-//        up();
-//    }
-
-//    if (x() < pos_final_x and y() < pos_final_y) {
-//        right();
-//        down();
-//    }
-//    else if (x() > pos_final_x and y() < pos_final_y) {
-//        left();
-//        down();
-//    }
-//    else if (x() < pos_final_x and y() > pos_final_y) {
-//        right();
-//        up();
-//    }
-//    else if (x() > pos_final_x and y() > pos_final_y) {
-//        left();
-//        up();
-//    }
-
-    if (this->collidesWithItem(personaje)) {
-        personaje->vida -= 10;
-        personaje->barra_personaje->setValue(personaje->vida);
-        setPos(pos_final_x, pos_final_y);
-    }
-
-    if ((pos_final_x-x() < 6 && pos_final_x-x() > -6) && (pos_final_y-y() < 6 && pos_final_y-y() > -6)){
-        scene()->removeItem(this);
-        delete this;
+    for (auto it : personajes) {
+        if (this->collidesWithItem(it)) {
+            it->vida -= 10;
+            it->barra_personaje->setValue(it->vida);
+            setPos(pos_final_x, pos_final_y);
+        }
     }
 
     columnas += ancho;
@@ -78,6 +45,11 @@ void bullets_enemy::Actualizacion()
         columnas = 0;
     }
     this->update(ancho/2, alto/2, ancho, alto);
+
+    if ((pos_final_x-x() < 6 && pos_final_x-x() > -6) && (pos_final_y-y() < 6 && pos_final_y-y() > -6)){
+        scene()->removeItem(this);
+        delete this;
+    }
 }
 
 QRectF bullets_enemy::boundingRect() const
