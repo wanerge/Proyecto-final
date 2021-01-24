@@ -1,23 +1,23 @@
 #include "jefe.h"
 
-
-
-
-jefe::jefe(QString direccion_img, int movement_, float ancho_, float alto_, float total_columnas_, float vida_,  float posx, float posy, QObject *parent)
+jefe::jefe(QString direccion_img, int movement_, float ancho_, float alto_, float total_columnas_, float vida_, float velocidad_, float posx, float posy, QObject *parent) : QObject(parent)
 {
     total_columnas = total_columnas_;
     ancho = ancho_;
     alto = alto_;
-    img = new QPixmap(direccion_img);
-    timer = new QTimer;
-    timer->start(80);
-    connect(timer, &QTimer::timeout, this, &jefe::Actualizacion);
     posiniciox = posx;
     posinicioy = posy;
-    setPos(posx,posy);
     movement = movement_;
     vida = vida_;
+    velocidad = velocidad_;
 
+    img = new QPixmap(direccion_img);
+    timer = new QTimer;
+
+    timer->start(80);
+    connect(timer, &QTimer::timeout, this, &jefe::Actualizacion);
+
+    setPos(posx,posy);
 }
 void jefe::Actualizacion()
 {
@@ -52,7 +52,6 @@ void jefe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 void jefe::movimiento1()
 {
-
     if(velocidad > 0){
         filas = alto;
     }
@@ -71,7 +70,7 @@ void jefe::movimiento1()
 
 void jefe::movimiento2()
 {
-    if(vida < 700){
+    if(vida < 1500){
         filas = alto;
     }
     ayudantepos = posinicioy+velocidad*tiempo;
@@ -86,13 +85,12 @@ void jefe::movimiento2()
 
 void jefe::movimiento3()
 {
-
-    velocidad3 += 1;
-    if(velocidad3 >35){
-        velocidad3 = 15;
+    velocidad += 1;
+    if(velocidad >35){
+        velocidad = 15;
     }
     if(x() - playerx > -10 and x() - playerx < 10 and y() - playery > -10 and y() - playery < 10){
-        velocidad3 = 0;
+        velocidad = 0;
     }
     if(y() < playery and x()-playerx >-10 and x()-playerx < 10){
         filas = 0;
@@ -153,28 +151,28 @@ void jefe::seguir(float playerx_, float playery_)
     playery = playery_ - 15;
 }
 
-jefe::~jefe()
-{
-
-}
-
-
 void jefe::up()
 {
-    setPos(x(),y()-velocidad3);
+    setPos(x(),y()-velocidad);
 }
 
 void jefe::down()
 {
-    setPos(x(),y()+velocidad3);
+    setPos(x(),y()+velocidad);
 }
 
 void jefe::left()
 {
-    setPos(x()-velocidad3,y());
+    setPos(x()-velocidad,y());
 }
 
 void jefe::right()
 {
-    setPos(x()+velocidad3,y());
+    setPos(x()+velocidad,y());
+}
+
+jefe::~jefe()
+{
+    delete timer;
+    delete img;
 }

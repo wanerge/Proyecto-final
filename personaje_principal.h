@@ -12,13 +12,13 @@ class personaje_principal : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit personaje_principal(QString direccion, float ancho_, float alto_, float fila_, float columna_, QObject *parent = nullptr);
+    explicit personaje_principal(QString direccion, float ancho_, float alto_, float fila_, float columna_, int vida_, QObject *parent = nullptr);
     ~personaje_principal();
 
     //variable que me dice si estan precionando una tecla
     bool ispush = false;
 
-    int vida = 1000, max_columnas = 4;
+    int vida, max_columnas = 4;
     float velocidad = 6, filas, columnas;
     float ancho, alto;
 

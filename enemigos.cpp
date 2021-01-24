@@ -26,9 +26,6 @@ void enemigos::Actualizacion()
     }
     this->update(ancho/2, alto/2, ancho, alto);
 
-//    if (Disparo == "no") {
-//        movimiento();
-//    }
     movimiento();
 }
 
@@ -36,28 +33,24 @@ void enemigos::movimiento()
 {
     if(y() < playery and x()-playerx >-10 and x()-playerx < 10){
         filas = 0;
-        //down();
         if (Disparo == "no") {
             down();
         }
     }
     else if(y() > playery and x()-playerx >-10 and x()-playerx < 10){
         filas = alto;
-        //up();
         if (Disparo == "no") {
             up();
         }
     }
     else if(x() > playerx and y()-playery > -10 and y()-playery < 10){
         filas = alto*3;
-        //left();
         if (Disparo == "no") {
             left();
         }
     }
     else if(x() < playerx and y()-playery > -10 and y()-playery < 10){
         filas = alto*2;
-        //right();
         if (Disparo == "no") {
             right();
         }
@@ -65,8 +58,6 @@ void enemigos::movimiento()
     else {
         if (x() < playerx and y() < playery) {
             filas = alto*2;
-            //right();
-            //down();
             if (Disparo == "no") {
                 right();
                 down();
@@ -74,8 +65,6 @@ void enemigos::movimiento()
         }
         else if (x() > playerx and y() < playery) {
             filas = alto*3;
-            //left();
-            //down();
             if (Disparo == "no") {
                 left();
                 down();
@@ -83,8 +72,6 @@ void enemigos::movimiento()
         }
         else if (x() < playerx and y() > playery) {
             filas = alto*2;
-//            right();
-//            up();
             if (Disparo == "no") {
                 right();
                 up();
@@ -92,8 +79,6 @@ void enemigos::movimiento()
         }
         else if (x() > playerx and y() > playery) {
             filas = alto*3;
-//            left();
-//            up();
             if (Disparo == "no") {
                 left();
                 up();

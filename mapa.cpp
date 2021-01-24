@@ -74,6 +74,7 @@ QVector<colisiones *> *mapa::getZonaspawn() const
 
 mapa::~mapa()
 {
+    delete zona_blocked;
     delete zonaspawn;
     delete mundo;
     delete contenedor;

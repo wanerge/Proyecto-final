@@ -24,7 +24,8 @@ SOURCES += \
     mapa.cpp \
     personaje_principal.cpp \
     powerboss.cpp \
-    spawn.cpp
+    spawn.cpp \
+    transiciones.cpp
 
 HEADERS += \
     bullets.h \
@@ -40,7 +41,8 @@ HEADERS += \
     mapa.h \
     personaje_principal.h \
     powerboss.h \
-    spawn.h
+    spawn.h \
+    transiciones.h
 
 FORMS += \
     mainwindow.ui

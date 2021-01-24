@@ -2,7 +2,6 @@
 
 spawn::spawn(QObject *parent) : QObject(parent)
 {
-    //carga_Datos(":/info/enemy_info.txt");
     infoenemy = new QMap<QString, float *>;
     Enemigos = new QVector<enemigos *>;
     Jefes = new QVector<jefe*>;
@@ -49,17 +48,18 @@ void spawn::carga_Datos(QString nombre_archivo)
 void spawn::generador(QString mob, QString imagsource, QString disparo)
 {
     QMap<QString, float *>::iterator i = infoenemy->find(mob);
-    if(mob == "Golem" ){
-        Jefes->push_back(new jefe(imagsource,1,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6]));
+    if(mob == "Golem" && i.value()[3] != 0){
+        Jefes->push_back(new jefe(imagsource,1,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6], i.value()[7]));
     }
-    else if(mob == "DonCangrejo"){
-        Jefes->push_back(new jefe(imagsource,2,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6]));
+    else if(mob == "DonCangrejo" && i.value()[3] != 0){
+        Jefes->push_back(new jefe(imagsource,2,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6], i.value()[7]));
     }
-    else if(mob == "Toro"){
-        Jefes->push_back(new jefe(imagsource,3,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6]));
+    else if(mob == "Toro" && i.value()[3] != 0){
+        eyes = new QVector<Powerboss *>;
+        Jefes->push_back(new jefe(imagsource,3,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6], i.value()[7]));
     }
-    else if(mob == "Belcebu"){
-        Jefes->push_back(new jefe(imagsource,4,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6]));
+    else if(mob == "Belcebu" && i.value()[3] != 0){
+        Jefes->push_back(new jefe(imagsource,4,i.value()[0],i.value()[1],i.value()[2],i.value()[4],i.value()[5],i.value()[6], i.value()[7]));
     }
     else{
         for (int num_enemigo = 0, indice_dato = 6; num_enemigo < i.value()[3] ; num_enemigo++, indice_dato+=2) {
@@ -166,8 +166,15 @@ QVector<jefe *> *spawn::getJefes() const
     return Jefes;
 }
 
+QVector<Powerboss *> *spawn::getEyes() const
+{
+    return eyes;
+}
+
 spawn::~spawn()
 {
+    delete datos;
+    delete Jefes;
     delete Enemigos;
     delete infoenemy;
 }

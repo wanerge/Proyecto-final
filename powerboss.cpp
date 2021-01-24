@@ -1,26 +1,34 @@
 #include "powerboss.h"
 
-
-
-
-Powerboss::Powerboss(QString direccion_img, float ancho_, float alto_, float total_columnas_,float posx_,float posy_,int movement_, QObject *parent)
+Powerboss::Powerboss(QString direccion_img, float ancho_, float alto_, float total_columnas_,int movement_, jefe *boss_, QVector<personaje_principal *> personajes_, QObject *parent) : QObject(parent)
 {
-    posx = posx_;
-    posy = posy_;
+    boss = boss_;
+    personajes = personajes_;
+    //person = person_;
+    posx = boss->x();
+    posy = boss->y();
 
     img = new QPixmap(direccion_img);
+    timer = new QTimer;
+
     ancho = ancho_;
     alto = alto_;
     total_columnas = total_columnas_;
     movement = movement_;
-    timer = new QTimer;
+
     timer->start(25);
+
+    if (movement == 2) {
+        posx += 70;
+        posy += 65;
+    }
+
     if(movement != 3){
-        setPos(posx,posy);
+        posx += (boss->ancho/2);
+        posy += (boss->alto/2);
+        setPos(posx, posy);
     }
     connect(timer, &QTimer::timeout, this, &Powerboss::actualizar);
-
-
 }
 
 QRectF Powerboss::boundingRect() const
@@ -40,17 +48,59 @@ void Powerboss::actualizar()
         columnas = 0;
     }
     this->update(ancho/2, alto/2, ancho, alto);
+
     if(movement == 1){
         movimiento1();
+        for (auto it : personajes) {
+            if (collidesWithItem(it)) {
+                it->vida -= 10;
+                it->barra_personaje->setValue(it->vida);
+            }
+        }
+        if(tiempo2 >= 20){
+            scene()->removeItem(this);
+            delete this;
+        }
     }
     else if(movement == 2){
         movimiento2();
+        for (auto it : personajes ) {
+            if (collidesWithItem(it)) {
+                it->vida -= 10;
+                it->barra_personaje->setValue(it->vida);
+                setY(1300);
+            }
+        }
+        if(y() >= 500){
+            scene()->removeItem(this);
+            delete this;
+        }
     }
     else if(movement == 3){
+        posx = boss->x()+40;
+        posy = boss->y()+40;
         movimiento3();
+        for (auto it : personajes ) {
+            if (collidesWithItem(it)) {
+                it->vida -= 10;
+                it->barra_personaje->setValue(it->vida);
+            }
+        }
     }
-    else if(movement ==4){
+    else if(movement == 4){
         movimiento4();
+        for (auto it : personajes ) {
+            if (collidesWithItem(it)) {
+                it->vida -= 10;
+                it->barra_personaje->setValue(it->vida);
+                setY(-100);
+            }
+        }
+        if(y() <= 10){
+            timer->stop();
+            scene()->removeItem(this);
+            delete this;
+        }
     }
 }
 
@@ -58,10 +108,10 @@ void Powerboss::movimiento1()
 {
     float x,y;
     float V0o = 15;
-    if(tiempo2 >= 20){
-        scene()->removeItem(this);
-        delete this;
-    }
+//    if(tiempo2 >= 20){
+//        scene()->removeItem(this);
+//        delete this;
+//    }
     if (tiempo2 == 0){
         angle = (rand()%120) + 1;
         Vxo = V0o*cos(angle*pi/180);
@@ -112,10 +162,10 @@ void Powerboss::movimiento1()
 void Powerboss::movimiento2()
 {
     float x2,y2;
-    if(tiempo2 >= 45){
-        scene()->removeItem(this);
-        delete this;
-    }
+//    if(tiempo2 >= 45){
+//        scene()->removeItem(this);
+//        delete this;
+//    }
     if(tiempo2 >=44)
         filas = alto;
     if (tiempo2 == 0){
@@ -130,7 +180,6 @@ void Powerboss::movimiento2()
     }
     x2 = posx + Vxo * tiempo;
     y2 = posy + Vyo * tiempo +(0.5 * G * tiempo * tiempo);
-    //y2 -= 2*y2;
     setPos(x2,y2);
     tiempo += 0.3;
     tiempo2 +=0.6;
@@ -144,9 +193,10 @@ void Powerboss::movimiento3()
         angle = 0;
         tiempo++;
     }
-    if(angle>limit){
-        scene()->removeItem(this);
-        delete this;
+    if(angle > limit){
+//        scene()->removeItem(this);
+//        delete this;
+        angle = 0;
     }
 
     float aux =angle*pi/180;
@@ -166,13 +216,19 @@ void Powerboss::movimiento4()
     if(velocidad <18){
         Vxo = velocidad*cos(-angle*pi/180);
     }
-    if(velocidad <= 1){
-        scene()->removeItem(this);
-        delete this;
-    }
+//    if(velocidad <= 1){
+//        scene()->removeItem(this);
+//        delete this;
+//    }
     velocidad=velocidad-friccion;
     x4 = posx+Vxo*tiempo;
     ayudantepos = posy+velocidad*tiempo;
     tiempo+=0.5;
     setPos(x4,ayudantepos);
+}
+
+Powerboss::~Powerboss()
+{
+    delete timer;
+    delete img;
 }

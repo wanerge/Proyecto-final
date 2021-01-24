@@ -6,14 +6,19 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QPainter>
-#include "jefe.h"
-#include "math.h"
 #include <QGraphicsScene>
+#include <math.h>
+#include "jefe.h"
+#include "personaje_principal.h"
+#include "bullets.h"
 
 class Powerboss :public QObject, public QGraphicsItem
 {
     Q_OBJECT
 private:
+    jefe *boss;
+    QVector<personaje_principal *> personajes;
+    //personaje_principal *person;
     QPixmap *img;
     QTimer *timer;
     float ancho, alto;
@@ -34,7 +39,8 @@ private:
     float Vyo;
 
 public:
-    explicit Powerboss(QString direccion_img, float ancho_, float alto_, float total_columnas_,float posx_,float posy_,int movement_, QObject *parent = nullptr);
+    explicit Powerboss(QString direccion_img, float ancho_, float alto_, float total_columnas_,int movement_, jefe *boss_, QVector<personaje_principal *> personajes_,QObject *parent = nullptr);
+    ~Powerboss();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void movimiento1();

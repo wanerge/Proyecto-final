@@ -14,7 +14,7 @@ class bullets_enemy : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit bullets_enemy(QString direccion_img, float ancho_, float alto_, float total_columnas_, personaje_principal *personaje_, QObject *parent = nullptr);
+    explicit bullets_enemy(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<personaje_principal *> personajes_, QObject *parent = nullptr);
     ~bullets_enemy();
 
     QRectF boundingRect() const;
@@ -29,7 +29,8 @@ public:
     float filas = 0, columnas = 0, total_columnas;
 
 private:
-    personaje_principal *personaje;
+    QVector<personaje_principal *> personajes;
+    //personaje_principal *personaje;
     QPixmap *img;
     QTimer *timer;
     float ancho, alto;

@@ -1,10 +1,13 @@
 #include "personaje_principal.h"
-//Constructor de la clase del personaje
-personaje_principal::personaje_principal(QString direccion, float ancho_, float alto_, float fila_, float columna_, QObject *parent) : QObject(parent)
-{
-    setPos(150, 740);
-    //setPos(-30, -20);
 
+//Constructor de la clase del personaje
+personaje_principal::personaje_principal(QString direccion, float ancho_, float alto_, float fila_, float columna_, int vida_, QObject *parent) : QObject(parent)
+{
+    //setPos(150, 740);
+    //setPos(-30, -20);
+    //setPos(4400, 200);
+
+    vida = vida_;
     filas = fila_;
     columnas = columna_;
     ancho = ancho_;
@@ -25,7 +28,6 @@ personaje_principal::personaje_principal(QString direccion, float ancho_, float 
 
     connect(timer, &QTimer::timeout, this, &personaje_principal::Actualizacion);
 }
-
 
 //Funcion que actualiza las imagenes del sprite
 void personaje_principal::Actualizacion()
