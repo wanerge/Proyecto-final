@@ -22,6 +22,8 @@
 #include "bullets_enemy.h"
 #include "powerboss.h"
 #include "transiciones.h"
+#include "load_and_save.h"
+#include "zonas_especiales.h"
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -71,6 +73,7 @@ private:
     interfaz_pausa *pausa;
     QGraphicsScene *ayuda;
     mapa *escenario;
+    zonas_especiales *zonas_jefes;
     QString estado;
     int mundo;
     bool crear_personaje;
@@ -87,6 +90,7 @@ private:
     QTimer *timer1, *timer2, *timer3;
 
     transiciones *transicion;
+    load_and_save *datos_almacenados;
 
 public slots:
     //reposaito invoca el qevent de tecla 0

@@ -559,6 +559,13 @@ void MainWindow::colision_up(personaje_principal *person)
             person->down();
         }
     }
+    if (!Spawner->getJefes()->isEmpty()) {
+        for (int i = 0; i < zonas_jefes->getContenedor()->size() ;i++) {
+            if(person->collidesWithItem(zonas_jefes->getContenedor()->at(i))){
+                person->down();
+            }
+        }
+    }
 }
 
 void MainWindow::colision_down(personaje_principal *person)
@@ -572,6 +579,13 @@ void MainWindow::colision_down(personaje_principal *person)
     for (int i = 0;i < escenario->getZona_blocked()->size();i++) {
         if(person->collidesWithItem(escenario->getZona_blocked()->at(i))){
             person->up();
+        }
+    }
+    if (!Spawner->getJefes()->isEmpty()) {
+        for (int i = 0; i < zonas_jefes->getContenedor()->size() ;i++) {
+            if(person->collidesWithItem(zonas_jefes->getContenedor()->at(i))){
+                person->up();
+            }
         }
     }
 }
@@ -589,6 +603,13 @@ void MainWindow::colision_left(personaje_principal *person)
             person->right();
         }
     }
+    if (!Spawner->getJefes()->isEmpty()) {
+        for (int i = 0; i < zonas_jefes->getContenedor()->size() ;i++) {
+            if(person->collidesWithItem(zonas_jefes->getContenedor()->at(i))){
+                person->right();
+            }
+        }
+    }
 }
 
 void MainWindow::colision_right(personaje_principal *person)
@@ -604,12 +625,20 @@ void MainWindow::colision_right(personaje_principal *person)
             person->left();
         }
     }
+    if (!Spawner->getJefes()->isEmpty()) {
+        for (int i = 0; i < zonas_jefes->getContenedor()->size() ;i++) {
+            if(person->collidesWithItem(zonas_jefes->getContenedor()->at(i))){
+                person->left();
+            }
+        }
+    }
 }
 
 void MainWindow::colision_spawn(personaje_principal *person)
 {
     if (Spawner->getEnemigos()->isEmpty() && Spawner->getJefes()->isEmpty()) {
         if(Spawner->activo){
+            escenario->getMundo()->removeItem(escenario->getZona_blocked()->last());
             escenario->getZona_blocked()->pop_back();
             Spawner->activo = false;
         }
@@ -628,8 +657,13 @@ void MainWindow::colision_spawn(personaje_principal *person)
                         timer3->start(300);
                     }
                     escenario->getMundo()->addItem(it);
+                    if (Spawner->mundo == 1) {
+                        zonas_jefes->mundo1();
+                    }
+                    else {
+                        zonas_jefes->mundo2();
+                    }
                 }
-                //escenario->getZonaspawn()->removeAt(i);
             }
         }
     }
@@ -771,6 +805,7 @@ void MainWindow::cambiar_mundo()
         delete timer1;
         delete vidas1;
         delete personaje1;
+        delete zonas_jefes;
         delete escenario;
         delete Spawner;
         mundo = 2;
@@ -824,6 +859,7 @@ void MainWindow::cargar_mundo1()
 
     escenario = new mapa(":/Imagenes/primer_mapa.png");
     Spawner = new spawn();
+    zonas_jefes = new zonas_especiales;
 
     view->setScene(escenario->getMundo());
     view->scale(1.7,1.4);
@@ -844,6 +880,7 @@ void MainWindow::cargar_mundo2()
 
     escenario = new mapa(":/Imagenes/segundo_mapa.png");
     Spawner = new spawn();
+    zonas_jefes = new zonas_especiales;
     Spawner->mundo = 2;
 
     view->setScene(escenario->getMundo());
@@ -960,32 +997,42 @@ void MainWindow::on_boton_Multi_clicked()
 
 void MainWindow::on_boton_Cargar_clicked()
 {
-    QFile arch;
-    QTextStream io;
-    QString nombreArch, extension;
-    nombreArch = QFileDialog::getOpenFileName(this, "Abrir");
-    if (!nombreArch.isEmpty()) {
-        for (int i = (nombreArch.length()-1); i > (nombreArch.length()-6)  ; i-- ) {
-            extension.push_front(nombreArch[i]);
-        }
-        if (extension == ".hell") {
-            arch.setFileName(nombreArch);
-            arch.open(QIODevice::ReadOnly | QIODevice::Text);
-            io.setDevice(&arch);
+    QString nombreArch;
+    nombreArch = QFileDialog::getOpenFileName(this, "Abrir Archivo");
+    datos_almacenados = new load_and_save(this);
+    datos_almacenados->load(nombreArch);
+    if (datos_almacenados->crear) {
+        mundo = datos_almacenados->mundo;
+        crear_personaje = false;
+        if (estado == "easy") {
+            estado = "reset";
+            on_boton_Facil_clicked();
+            cargar_personajes(1, datos_almacenados->per_x, datos_almacenados->per_y, 1000, datos_almacenados->num_vidas, 40);
+            personaje1->vida = datos_almacenados->vida;
+            personaje1->barra_personaje->setValue(personaje1->vida);
         }
         else {
-            QMessageBox::critical(this, "Error", arch.errorString());
+            estado = "reset";
+            on_boton_Dificil_clicked();
+            cargar_personajes(1, datos_almacenados->per_x, datos_almacenados->per_y, 1000, datos_almacenados->num_vidas, 40);
+            personaje1->vida = datos_almacenados->vida;
+            personaje1->barra_personaje->setValue(personaje1->vida);
         }
-        arch.flush();
-        arch.close();
+        crear_personaje = true;
+        mundo = 1;
+        delete Spawner->getInfoenemy();
+        delete escenario->getZona_blocked();
+        Spawner->setInfoenemy(datos_almacenados->getInfoenemy());
+        escenario->setZona_blocked(datos_almacenados->getZona_blocked());
     }
+    delete datos_almacenados;
 }
 
 void MainWindow::on_boton_Eliminar_clicked()
 {
     QFile arch;
     QString nombreArch, extension;
-    nombreArch = QFileDialog::getOpenFileName(this, "Abrir");
+    nombreArch = QFileDialog::getOpenFileName(this, "Eliminar Archivo");
     if (!nombreArch.isEmpty()) {
         arch.setFileName(nombreArch);
         for (int i = (nombreArch.length()-1); i > (nombreArch.length()-6)  ; i-- ) {
@@ -993,6 +1040,9 @@ void MainWindow::on_boton_Eliminar_clicked()
         }
         if (extension == ".hell") {
             arch.remove();
+        }
+        else {
+            QMessageBox::critical(this, "Error", "Archivo Denegado");
         }
         arch.close();
     }
@@ -1016,7 +1066,25 @@ void MainWindow::on_boton_Salir_clicked()
 
 void MainWindow::on_boton_Guardar_clicked()
 {
+    QString nombreArch;
+    nombreArch = QFileDialog::getSaveFileName(this, "Guardar Como");
 
+    datos_almacenados = new load_and_save(this);
+
+    if (estado == "pause_N_easy"){
+        datos_almacenados->estado = "easy";
+    }
+    else if (estado == "pause_N_hard") {
+        datos_almacenados->estado = "hard";
+    }
+    datos_almacenados->mundo = Spawner->mundo;
+    datos_almacenados->num_vidas = vidas1->getVidas()->length();
+    datos_almacenados->personajes = personajes;
+    datos_almacenados->infoenemy = Spawner->getInfoenemy();
+    datos_almacenados->zona_blocked = escenario->getZona_blocked();
+
+    datos_almacenados->save(nombreArch);
+    delete datos_almacenados;
 }
 
 void MainWindow::on_boton_Reiniciar_clicked()
@@ -1028,6 +1096,7 @@ void MainWindow::on_boton_Reiniciar_clicked()
         delete timer1;
         delete vidas1;
         delete personaje1;
+        delete zonas_jefes;
         delete escenario;
         delete Spawner;
 
@@ -1049,6 +1118,7 @@ void MainWindow::on_boton_Reiniciar_clicked()
         delete vidas2;
         delete personaje1;
         delete personaje2;
+        delete zonas_jefes;
         delete escenario;
         delete Spawner;
 
@@ -1066,6 +1136,7 @@ void MainWindow::on_boton_Menu_clicked()
         delete timer1;
         delete vidas1;
         delete personaje1;
+        delete zonas_jefes;
         delete escenario;
         delete Spawner;
     }
@@ -1078,6 +1149,7 @@ void MainWindow::on_boton_Menu_clicked()
         delete vidas2;
         delete personaje1;
         delete personaje2;
+        delete zonas_jefes;
         delete escenario;
         delete Spawner;
     }

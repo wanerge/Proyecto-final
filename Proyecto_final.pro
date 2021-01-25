@@ -19,13 +19,15 @@ SOURCES += \
     interfaz_pausa.cpp \
     jefe.cpp \
     life.cpp \
+    load_and_save.cpp \
     main.cpp \
     mainwindow.cpp \
     mapa.cpp \
     personaje_principal.cpp \
     powerboss.cpp \
     spawn.cpp \
-    transiciones.cpp
+    transiciones.cpp \
+    zonas_especiales.cpp
 
 HEADERS += \
     bullets.h \
@@ -37,12 +39,14 @@ HEADERS += \
     interfaz_pausa.h \
     jefe.h \
     life.h \
+    load_and_save.h \
     mainwindow.h \
     mapa.h \
     personaje_principal.h \
     powerboss.h \
     spawn.h \
-    transiciones.h
+    transiciones.h \
+    zonas_especiales.h
 
 FORMS += \
     mainwindow.ui

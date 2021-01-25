@@ -11,9 +11,10 @@ class colisiones: public QGraphicsItem
 public:
     int w,h;
     int posx,posy;
-    colisiones(int w_, int h_, int x, int y);
+    colisiones(int w_, int h_, int x, int y, QBrush color_);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget=nullptr);
+    QBrush color;
 
 };
 
