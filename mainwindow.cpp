@@ -663,6 +663,28 @@ void MainWindow::colision_spawn(personaje_principal *person)
                     else {
                         zonas_jefes->mundo2();
                     }
+                    if (estado == "multi") {
+                        if (personaje_pri && personaje_seg) {
+                            if (it->movement == 2) {
+                                if (personaje2->y() > personaje1->y()) {
+                                    personaje2->setPos(personaje1->pos());
+                                    actualizar(personaje2);
+                                }
+                                else {
+                                    personaje1->setPos(personaje2->pos());
+                                    actualizar(personaje1);
+                                }
+                            }
+                            else if (personaje2->x() < personaje1->x()) {
+                                personaje2->setPos(personaje1->pos());
+                                actualizar(personaje2);
+                            }
+                            else {
+                                personaje1->setPos(personaje2->pos());
+                                actualizar(personaje1);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -768,11 +790,23 @@ void MainWindow::generar_disparo()
                     Spawner->getEyes()->push_back(fisica);
                 }
                 if(it->distancia_recorrida > 60){
-                    it->playerx = personaje1->x();
-                    it->playery = personaje1->y();
+                    if (personaje_pri) {
+                        it->playerx = personaje1->x();
+                        it->playery = personaje1->y();
+                    }
+                    else if(personaje_seg){
+                        it->playerx = personaje2->x();
+                        it->playery = personaje2->y();
+                    }
                     it->distancia_recorrida = 0;
                 }
                 it->distancia_recorrida += 10;
+                for (auto itt : personajes) {
+                    if (it->collidesWithItem(itt)) {
+                        itt->vida -= 10;
+                        itt->barra_personaje->setValue(itt->vida);
+                    }
+                }
                 if (it->vida <= 0) {
                     for (auto it : *Spawner->getEyes()) {
                         escenario->getMundo()->removeItem(it);
@@ -816,6 +850,7 @@ void MainWindow::cambiar_mundo()
             cargar_personajes(1, 150, 150, 1000, num_vida1, 40);
             personaje1->vida = vida1;
             personaje1->barra_personaje->setValue(personaje1->vida);
+            personaje_seg = false;
         }
         else if (estado == "transicion_N_hard") {
             estado = "reset";
@@ -823,6 +858,7 @@ void MainWindow::cambiar_mundo()
             cargar_personajes(1, 150, 150, 1000, num_vida1, 40);
             personaje1->vida = vida1;
             personaje1->barra_personaje->setValue(personaje1->vida);
+            personaje_seg = false;
         }
         else if (estado == "transicion_M") {
             int vida2 = personaje2->vida, num_vida2 = vidas2->getVidas()->length();
@@ -837,7 +873,6 @@ void MainWindow::cambiar_mundo()
             }
             else {
                 cargar_personajes(1, 150, 150, 0, 1, 40);
-                personaje_seg = true;
             }
             if (personaje_seg) {
                 cargar_personajes(2, 110, 150, 1000, num_vida2, 60);
@@ -910,9 +945,9 @@ void MainWindow::cargar_personajes(int persona, float pos_x, float pos_y, int vi
         timer1->start(milisegundos);
 
         connect(timer1, &QTimer::timeout, this, &MainWindow::personajes_activos);
+
         personaje_pri = true;
         personajes.push_back(personaje1);
-        personaje_seg = false;
         actualizar(personaje1);
     }
     else {
@@ -951,12 +986,14 @@ void MainWindow::on_boton_Facil_clicked()
         cargar_mundo1();
         if (crear_personaje) {
             cargar_personajes(1, 150, 740, 1000, 3, 40);
+            personaje_seg = false;
         }
     }
     else {
         cargar_mundo2();
         if (crear_personaje) {
             cargar_personajes(1, 150, 150, 1000, 3, 40);
+            personaje_seg = false;
         }
     }
 
@@ -972,12 +1009,14 @@ void MainWindow::on_boton_Dificil_clicked()
         cargar_mundo1();
         if (crear_personaje) {
             cargar_personajes(1, 150, 740, 1000, 1, 40);
+            personaje_seg = false;
         }
     }
     else {
         cargar_mundo2();
         if (crear_personaje) {
             cargar_personajes(1, 150, 150, 1000, 1, 40);
+            personaje_seg = false;
         }
     }
     estado = "hard";
@@ -1002,6 +1041,7 @@ void MainWindow::on_boton_Cargar_clicked()
     datos_almacenados = new load_and_save(this);
     datos_almacenados->load(nombreArch);
     if (datos_almacenados->crear) {
+        estado = datos_almacenados->estado;
         mundo = datos_almacenados->mundo;
         crear_personaje = false;
         if (estado == "easy") {
@@ -1018,12 +1058,14 @@ void MainWindow::on_boton_Cargar_clicked()
             personaje1->vida = datos_almacenados->vida;
             personaje1->barra_personaje->setValue(personaje1->vida);
         }
+        personaje_seg = false;
         crear_personaje = true;
         mundo = 1;
         delete Spawner->getInfoenemy();
         delete escenario->getZona_blocked();
         Spawner->setInfoenemy(datos_almacenados->getInfoenemy());
         escenario->setZona_blocked(datos_almacenados->getZona_blocked());
+        delete inicio;
     }
     delete datos_almacenados;
 }

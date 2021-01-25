@@ -57,7 +57,7 @@ void Powerboss::actualizar()
                 it->barra_personaje->setValue(it->vida);
             }
         }
-        if(tiempo2 >= 20){
+        if(tiempo2 >= 40){
             scene()->removeItem(this);
             delete this;
         }
