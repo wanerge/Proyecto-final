@@ -58,6 +58,10 @@ void load_and_save::load(QString nombreArch)
             crear = false;
         }
     }
+    else {
+        QMessageBox::critical(mainwindow, "Error", "No ingreso nombre");
+        crear = false;
+    }
 }
 
 void load_and_save::l_personaje(QString linea1)
