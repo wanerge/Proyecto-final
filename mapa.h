@@ -21,7 +21,10 @@ public:
 
     QVector<colisiones *> *getZona_blocked() const;
 
+    void setZona_blocked(QVector<colisiones *> *value);
+
 private:
+    colisiones *rec;
     QGraphicsScene *mundo;
     QVector<colisiones *> *contenedor;
     QVector<colisiones *> *zonaspawn;

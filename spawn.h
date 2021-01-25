@@ -20,12 +20,16 @@ public:
     void carga_Datos(QString nombre_archivo);
     void generador(QString mob, QString imagsource, QString disparo);
     void zona_activa(int i);
-    int mundo=1;
-    QVector<enemigos *> *getEnemigos() const;
-    bool activo=false;
-    QVector<jefe *> *getJefes() const;
 
+    int mundo=1;
+    bool activo=false;
+
+    QVector<enemigos *> *getEnemigos() const;
+    QVector<jefe *> *getJefes() const;
     QVector<Powerboss *> *getEyes() const;
+    QMap<QString, float *> *getInfoenemy() const;
+
+    void setInfoenemy(QMap<QString, float *> *value);
 
 private:
     QMap<QString, float *> *infoenemy;
@@ -34,7 +38,7 @@ private:
     QVector<Powerboss *> *eyes;
 
     float *datos;
-    QVector<int> numero_datos;
+    //QVector<int> numero_datos;
 
 signals:
 

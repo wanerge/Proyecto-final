@@ -40,7 +40,7 @@ void mapa::carga_Datos(QString nombre_archivo, QVector<colisiones *> *container)
                 else linea2.push_back(linea1[i]);
             }
             datos[3] = linea2.toInt();
-            colisiones *rec = new colisiones(datos[0], datos[1], datos[2], datos[3]);
+            rec = new colisiones(datos[0], datos[1], datos[2], datos[3], Qt::blue);
             container->push_back(rec);
         }
         archivo.close();
@@ -55,6 +55,11 @@ void mapa::carga_Datos(QString nombre_archivo, QVector<colisiones *> *container)
 QVector<colisiones *> *mapa::getZona_blocked() const
 {
     return zona_blocked;
+}
+
+void mapa::setZona_blocked(QVector<colisiones *> *value)
+{
+    zona_blocked = value;
 }
 
 QVector<colisiones *> *mapa::getContenedor() const

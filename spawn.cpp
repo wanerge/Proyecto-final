@@ -39,7 +39,7 @@ void spawn::carga_Datos(QString nombre_archivo)
             }
             datos[num_datos-1] = linea2.toFloat();
             infoenemy->insert(aux, datos);
-            numero_datos.push_back(num_datos);
+            //numero_datos.push_back(num_datos);
         }
         archivo.close();
     }
@@ -169,6 +169,16 @@ QVector<jefe *> *spawn::getJefes() const
 QVector<Powerboss *> *spawn::getEyes() const
 {
     return eyes;
+}
+
+QMap<QString, float *> *spawn::getInfoenemy() const
+{
+    return infoenemy;
+}
+
+void spawn::setInfoenemy(QMap<QString, float *> *value)
+{
+    infoenemy = value;
 }
 
 spawn::~spawn()
