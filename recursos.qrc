@@ -51,5 +51,10 @@
         <file>Imagenes/Enemigos/mundo1/cangrejo clone.png</file>
         <file>Imagenes/disparos/bola_roja.png</file>
         <file>Imagenes/transicion_mundo2.png</file>
+        <file>sonidos/musica_juego.mp3</file>
+        <file>sonidos/musica_menu.mp3</file>
+        <file>sonidos/bala.mp3</file>
+        <file>sonidos/game_over.mp3</file>
+        <file>sonidos/grito_hombre.mp3</file>
     </qresource>
 </RCC>
