@@ -25,6 +25,7 @@ SOURCES += \
     mapa.cpp \
     personaje_principal.cpp \
     powerboss.cpp \
+    sonidos.cpp \
     spawn.cpp \
     transiciones.cpp \
     zonas_especiales.cpp
@@ -44,6 +45,7 @@ HEADERS += \
     mapa.h \
     personaje_principal.h \
     powerboss.h \
+    sonidos.h \
     spawn.h \
     transiciones.h \
     zonas_especiales.h

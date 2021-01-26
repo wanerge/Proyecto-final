@@ -25,11 +25,15 @@ MainWindow::MainWindow(QWidget *parent)
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    sonidoefecto = new sonidos();
+
     menu();
+
+
 }
 
 void MainWindow::menu()
-{
+{   
     inicio = new interfaz_inicio;
     mundo = 1;
     crear_personaje = true;
@@ -46,6 +50,8 @@ void MainWindow::menu()
     connect(inicio->getBoton_Salir(), &QPushButton::clicked , this, &MainWindow::on_boton_Salir_clicked);
 
     estado = "menu";
+    sonidoefecto->sonidosfondo("menu");
+
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *evento)
@@ -171,6 +177,7 @@ void MainWindow::key_press(personaje_principal *person, QTimer *time, QKeyEvent 
                 person->ispush = true;
                 person->columnas = person->ancho*4;
                 person->max_columnas = 7;
+                sonidoefecto->sonidosvarios("bala");
             }
         }
     }
@@ -213,6 +220,7 @@ void MainWindow::key_press(personaje_principal *person, QTimer *time, QKeyEvent 
                 person->ispush = true;
                 person->columnas = person->ancho*4;
                 person->max_columnas = 7;
+                sonidoefecto->sonidosvarios("bala");
             }
         }
     }
@@ -423,6 +431,7 @@ void MainWindow::personajes_activos()
 void MainWindow::reinicio_muerte(personaje_principal *person, life *vidas, QTimer *time)
 {
     if (person->vida <= 0) {
+        sonidoefecto->sonidosvarios("grito");
         vidas->eliminar_vida();
         if (person == personaje1) {
             personaje_pri = false;
@@ -466,8 +475,10 @@ void MainWindow::reinicio_muerte(personaje_principal *person, life *vidas, QTime
                 else {
                     estado = "pause_N_easy";
                 }
+                sonidoefecto->sonidosvarios("gameover");
             }
             else if (estado == "multi" && !personaje_pri && !personaje_seg) {
+                sonidoefecto->sonidosvarios("gameover");
                 pausa = new interfaz_pausa(true);
                 this->setCentralWidget(pausa->getWid());
                 connect(pausa->getBoton_Reiniciar(), &QPushButton::clicked , this, &MainWindow::on_boton_Reiniciar_clicked);
@@ -998,6 +1009,7 @@ void MainWindow::on_boton_Facil_clicked()
     }
 
     estado = "easy";
+    sonidoefecto->sonidosfondo("jugar");
 }
 
 void MainWindow::on_boton_Dificil_clicked()
@@ -1020,6 +1032,7 @@ void MainWindow::on_boton_Dificil_clicked()
         }
     }
     estado = "hard";
+    sonidoefecto->sonidosfondo("jugar");
 }
 
 void MainWindow::on_boton_Multi_clicked()

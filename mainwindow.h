@@ -24,6 +24,7 @@
 #include "transiciones.h"
 #include "load_and_save.h"
 #include "zonas_especiales.h"
+#include "sonidos.h"
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -91,6 +92,8 @@ private:
 
     transiciones *transicion;
     load_and_save *datos_almacenados;
+    sonidos *sonidoefecto;
+
 
 public slots:
     //reposaito invoca el qevent de tecla 0

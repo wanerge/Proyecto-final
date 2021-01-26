@@ -211,8 +211,8 @@ void Powerboss::movimiento4()
     float x4;
     if(tiempo == 0){
         angle = (rand()%100)+40;
-        Vxo = 36*cos(angle*pi/180);
     }
+    Vxo = velocidad*cos(angle*pi/180);
     if(velocidad <18){
         Vxo = velocidad*cos(-angle*pi/180);
     }
