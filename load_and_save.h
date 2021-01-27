@@ -26,6 +26,7 @@ public:
     int mundo, num_vidas, vida;
     float per_x, per_y;
     float *datos;
+    int puntos;
     bool crear = true;
 
     QVector<personaje_principal *> personajes;

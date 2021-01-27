@@ -5,8 +5,12 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
+
+    this->setWindowTitle("PixHell");
+    QIcon icon = this->windowIcon();
+    icon.addFile(":/Imagenes/Doom.png");
+    this->setWindowIcon(icon);
 
     view = new QGraphicsView(this);
 
@@ -166,7 +170,7 @@ void MainWindow::key_press(personaje_principal *person, QTimer *time, QKeyEvent 
         else if ((evento->key() == Qt::Key_Space) && (!evento->isAutoRepeat())) {
             if (person->estado == "vivo") {
                 if (!Spawner->getEnemigos()->isEmpty()) {
-                    bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getEnemigos());
+                    bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getEnemigos(),puntos);
                 }
                 else {
                     bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getJefes());
@@ -209,10 +213,10 @@ void MainWindow::key_press(personaje_principal *person, QTimer *time, QKeyEvent 
         else if ((evento->key() == Qt::Key_P) && (!evento->isAutoRepeat())) {
             if (person->estado == "vivo") {
                 if (!Spawner->getEnemigos()->isEmpty()) {
-                    bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getEnemigos());
+                    bullet = new bullets(":/Imagenes/disparos/disparos_varios2.png", 20, 20, 3, Spawner->getEnemigos(),puntos);
                 }
                 else {
-                    bullet = new bullets(":/Imagenes/disparos/disparos_varios.png", 20, 20, 3, Spawner->getJefes());
+                    bullet = new bullets(":/Imagenes/disparos/disparos_varios2.png", 20, 20, 3, Spawner->getJefes());
                 }
                 direccion_disparo(person);
                 escenario->getMundo()->addItem(bullet);
@@ -443,7 +447,7 @@ void MainWindow::reinicio_muerte(personaje_principal *person, life *vidas, QTime
         }
         if (!vidas->getVidas()->isEmpty()) {
             person->estado = "muerto";
-            time->start(1300);
+            time->start(3000);
             timer3->stop();
             person->filas = 140;
             for(auto it : *Spawner->getEnemigos()){
@@ -544,6 +548,7 @@ void MainWindow::movimiento_personaje(personaje_principal *person)
         actualizar(person);
     }
     colision_spawn(person);
+    cuadro_puntos->actualizar(puntos);
 }
 
 void MainWindow::actualizar(personaje_principal *person)
@@ -764,6 +769,7 @@ void MainWindow::generar_disparo()
                 if (it->vida <= 0){
                     escenario->getMundo()->removeItem(it);
                     Spawner->getJefes()->removeFirst();
+                    *puntos += 1000;
                 }
             }
             else if(it->movement == 2){
@@ -787,6 +793,7 @@ void MainWindow::generar_disparo()
                     else if (estado == "multi") {
                         estado = "transicion_M";
                     }
+                    *puntos += 1000;
                 }
             }
             else if(it->movement == 3){
@@ -826,6 +833,7 @@ void MainWindow::generar_disparo()
                     delete Spawner->getEyes();
                     escenario->getMundo()->removeItem(it);
                     Spawner->getJefes()->removeFirst();
+                    *puntos += 1000;
                 }
             }
             else if(it->movement == 4){
@@ -834,6 +842,12 @@ void MainWindow::generar_disparo()
                 if (it->vida <= 0){
                     escenario->getMundo()->removeItem(it);
                     Spawner->getJefes()->removeFirst();
+                    view->resetTransform();
+                    escenario->getMundo()->setSceneRect(0,0,1366,768);
+                    escenario->getMundo()->setBackgroundBrush(QBrush(QImage(":/Imagenes/imagen_final1.png")));
+                    timer3->start(7000);
+                    disconnect(timer3, &QTimer::timeout, this, &MainWindow::generar_disparo);
+                    connect(timer3, &QTimer::timeout, this, &MainWindow::imagen_final);
                 }
             }
         }
@@ -897,6 +911,40 @@ void MainWindow::cambiar_mundo()
         crear_personaje = true;
         mundo = 1;
     }
+}
+
+void MainWindow::imagen_final()
+{
+    if (estado == "easy" || estado == "hard") {
+        view->resetTransform();
+        delete timer3;
+        delete timer1;
+        delete vidas1;
+        delete personaje1;
+        delete zonas_jefes;
+        delete escenario;
+        delete Spawner;
+        delete cuadro_puntos;
+        delete puntos;
+    }
+    else if (estado == "multi") {
+        view->resetTransform();
+        delete timer3;
+        delete timer1;
+        delete timer2;
+        delete vidas1;
+        delete vidas2;
+        delete personaje1;
+        delete personaje2;
+        delete zonas_jefes;
+        delete escenario;
+        delete Spawner;
+        delete cuadro_puntos;
+        delete puntos;
+    }
+    crear_personaje = true;
+    mundo = 1;
+    menu();
 }
 
 void MainWindow::cargar_mundo1()
@@ -963,7 +1011,7 @@ void MainWindow::cargar_personajes(int persona, float pos_x, float pos_y, int vi
     }
     else {
         timer2 = new QTimer;
-        personaje2 = new personaje_principal(":/Imagenes/soldado universal.png",35,35,0,0,vida_total);
+        personaje2 = new personaje_principal(":/Imagenes/soldado universal2.png",35,35,0,0,vida_total);
         vidas2 = new life(this, num_vidas, (num_vidas*33)+1, 1332, 0);
 
         escenario->getMundo()->addItem(personaje2);
@@ -998,6 +1046,8 @@ void MainWindow::on_boton_Facil_clicked()
         if (crear_personaje) {
             cargar_personajes(1, 150, 740, 1000, 3, 40);
             personaje_seg = false;
+            puntos = new int(0);
+            cuadro_puntos = new puntaje(this, 0, 33);
         }
     }
     else {
@@ -1022,6 +1072,8 @@ void MainWindow::on_boton_Dificil_clicked()
         if (crear_personaje) {
             cargar_personajes(1, 150, 740, 1000, 1, 40);
             personaje_seg = false;
+            puntos = new int(0);
+            cuadro_puntos = new puntaje(this, 0, 33);
         }
     }
     else {
@@ -1071,6 +1123,9 @@ void MainWindow::on_boton_Cargar_clicked()
             personaje1->vida = datos_almacenados->vida;
             personaje1->barra_personaje->setValue(personaje1->vida);
         }
+        puntos = new int(0);
+        cuadro_puntos = new puntaje(this, 0, 33);
+        *puntos = datos_almacenados->puntos;
         personaje_seg = false;
         crear_personaje = true;
         mundo = 1;
@@ -1137,6 +1192,7 @@ void MainWindow::on_boton_Guardar_clicked()
     datos_almacenados->personajes = personajes;
     datos_almacenados->infoenemy = Spawner->getInfoenemy();
     datos_almacenados->zona_blocked = escenario->getZona_blocked();
+    datos_almacenados->puntos = *puntos;
 
     datos_almacenados->save(nombreArch);
     delete datos_almacenados;
@@ -1154,6 +1210,8 @@ void MainWindow::on_boton_Reiniciar_clicked()
         delete zonas_jefes;
         delete escenario;
         delete Spawner;
+        delete cuadro_puntos;
+        delete puntos;
 
         if (estado == "pause_N_easy") {
             estado = "reset";
@@ -1176,6 +1234,8 @@ void MainWindow::on_boton_Reiniciar_clicked()
         delete zonas_jefes;
         delete escenario;
         delete Spawner;
+        delete cuadro_puntos;
+        delete puntos;
 
         estado = "reset";
         on_boton_Multi_clicked();
@@ -1194,6 +1254,8 @@ void MainWindow::on_boton_Menu_clicked()
         delete zonas_jefes;
         delete escenario;
         delete Spawner;
+        delete cuadro_puntos;
+        delete puntos;
     }
     else if (estado == "pause_M") {
         view->resetTransform();
@@ -1207,6 +1269,8 @@ void MainWindow::on_boton_Menu_clicked()
         delete zonas_jefes;
         delete escenario;
         delete Spawner;
+        delete cuadro_puntos;
+        delete puntos;
     }
     menu();
 }

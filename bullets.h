@@ -14,7 +14,7 @@ class bullets : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<enemigos *> *enemy, QObject *parent = nullptr);
+    explicit bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<enemigos *> *enemy, int *puntos_,QObject *parent = nullptr);
     explicit bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<jefe *> *enemy, QObject *parent = nullptr);
     ~bullets();
 
@@ -30,6 +30,8 @@ public:
     float filas = 0, columnas = 0, total_columnas;
 
     bool diagonal = false, tipo_enemy = true;
+
+    int *puntos_jugador;
 
 private:
     QVector<jefe *> *Jefe;

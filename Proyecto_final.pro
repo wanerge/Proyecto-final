@@ -25,6 +25,7 @@ SOURCES += \
     mapa.cpp \
     personaje_principal.cpp \
     powerboss.cpp \
+    puntaje.cpp \
     sonidos.cpp \
     spawn.cpp \
     transiciones.cpp \
@@ -45,6 +46,7 @@ HEADERS += \
     mapa.h \
     personaje_principal.h \
     powerboss.h \
+    puntaje.h \
     sonidos.h \
     spawn.h \
     transiciones.h \

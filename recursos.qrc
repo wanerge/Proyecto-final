@@ -3,16 +3,12 @@
         <file>Imagenes/primer_mapa.png</file>
         <file>Imagenes/soldado universal.png</file>
         <file>Imagenes/portada.jpg</file>
-        <file>Imagenes/portada2.jpg</file>
         <file>Imagenes/ayuda.png</file>
         <file>info/colisiones2.txt</file>
         <file>Imagenes/disparos/bola_amarilla.png</file>
         <file>Imagenes/disparos/bola_azul.png</file>
-        <file>Imagenes/disparos/bola_verde.png</file>
         <file>Imagenes/disparos/burbuja.png</file>
         <file>Imagenes/disparos/ojo.png</file>
-        <file>Imagenes/disparos/roca.png</file>
-        <file>Imagenes/disparos/taladro.png</file>
         <file>Imagenes/disparos/disparos_varios.png</file>
         <file>Imagenes/corazon.png</file>
         <file>info/zonas_spawn.txt</file>
@@ -56,5 +52,9 @@
         <file>sonidos/bala.mp3</file>
         <file>sonidos/game_over.mp3</file>
         <file>sonidos/grito_hombre.mp3</file>
+        <file>Imagenes/soldado universal2.png</file>
+        <file>Imagenes/disparos/disparos_varios2.png</file>
+        <file>Imagenes/Doom.png</file>
+        <file>Imagenes/imagen_final1.png</file>
     </qresource>
 </RCC>
