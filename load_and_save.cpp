@@ -37,6 +37,10 @@ void load_and_save::load(QString nombreArch)
                         i++;
                         break;
                     case 4:
+                        puntos = linea1.toInt();
+                        i++;
+                        break;
+                    case 5:
                         if (linea1 != "zona_bloquada") {
                             l_enemigos(linea1);
                         }
@@ -44,7 +48,7 @@ void load_and_save::load(QString nombreArch)
                             i++;
                         }
                         break;
-                    case 5:
+                    case 6:
                         l_zona_bloquada(linea1);
                         break;
                     }
@@ -170,6 +174,7 @@ void load_and_save::save(QString nombreArch)
             for (auto it : personajes) {
                 in << int(it->x()) << " " << int(it->y()) << " " << it->vida << " " << num_vidas << "\n";
             }
+            in << puntos << "\n";
             QMap<QString, float *>::iterator it = infoenemy->begin();
             for( ; it != infoenemy->end(); it++ ){
                 in << it.key() << " ";

@@ -25,6 +25,7 @@
 #include "load_and_save.h"
 #include "zonas_especiales.h"
 #include "sonidos.h"
+#include "puntaje.h"
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -90,6 +91,10 @@ private:
     spawn *Spawner;
     QTimer *timer1, *timer2, *timer3;
 
+    //puntaje del jugador
+    puntaje *cuadro_puntos;
+    int *puntos;
+
     transiciones *transicion;
     load_and_save *datos_almacenados;
     sonidos *sonidoefecto;
@@ -104,6 +109,9 @@ public slots:
 
     //funcion para ver una pequeña transicion del primer mundo al segundo
     void cambiar_mundo();
+
+    //muestra una imagen cuando gana el juego y luego vuelve al menu
+    void imagen_final();
 
 private slots:
     void on_boton_Nueva_clicked();
