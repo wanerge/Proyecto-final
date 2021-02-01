@@ -16,8 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->window()->showFullScreen();
     if (this->width() <= 1366 && this->height() <= 768) {
-        //this->showFullScreen();
-        this->showMaximized();
+        this->showFullScreen();
+        //this->showMaximized();
     }
     else {
         this->setMaximumSize(1366,768);
@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
         this->showMaximized();
     }
 
-    view->resize(1366,1000);
+    view->resize(1366,1100);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
