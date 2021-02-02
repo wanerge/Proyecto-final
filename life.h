@@ -11,7 +11,7 @@ class life
 public:
     life(QMainWindow *s, int num_vidas, int max_x_view, int pos_x, int pos_y);
     ~life();
-
+    //Eliminar vida
     void eliminar_vida();
 
     QVector<QGraphicsPixmapItem *> *getVidas() const;
