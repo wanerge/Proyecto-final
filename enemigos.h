@@ -25,7 +25,7 @@ public:
     void right();
 
     void movimiento();
-
+    //Funcion para obtener pos de jugador
     void seguir(float playerx_,float playery_);
 
     QString Disparo;

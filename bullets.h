@@ -14,13 +14,16 @@ class bullets : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
+    //Constructor Balas que afectan a enemigos
     explicit bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<enemigos *> *enemy, int *puntos_,QObject *parent = nullptr);
+    //Constructor Balas que afectan a jefes
     explicit bullets(QString direccion_img, float ancho_, float alto_, float total_columnas_, QVector<jefe *> *enemy, QObject *parent = nullptr);
     ~bullets();
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+    //Funciones de movimiento de las balas
     void up();
     void down();
     void left();

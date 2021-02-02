@@ -16,19 +16,23 @@ class Powerboss :public QObject, public QGraphicsItem
 {
     Q_OBJECT
 private:
+    //Variable que va a almacenar al jefe
     jefe *boss;
+
+    //Vector que almacena los personajes
     QVector<personaje_principal *> personajes;
     //personaje_principal *person;
     QPixmap *img;
     QTimer *timer;
+    //Dimensiones
     float ancho, alto;
+    float filas = 0, columnas = 0,total_columnas;
+    //Variables fisicas
     float velocidad =36;
     float V0o;
-    float filas = 0, columnas = 0,total_columnas;
-    int movement;
+
     float G=5;
     float posx,posy;
-    //variables fisicas
     float pi = 3.1416;
     float tiempo = 0, tiempo2 = 0;
     float angle;
@@ -38,11 +42,17 @@ private:
     float Vxo;
     float Vyo;
 
+    //Movimiento del poder
+    int movement;
+
 public:
+    //Constructor poder
     explicit Powerboss(QString direccion_img, float ancho_, float alto_, float total_columnas_,int movement_, jefe *boss_, QVector<personaje_principal *> personajes_,QObject *parent = nullptr);
     ~Powerboss();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    //Funciones de diferentes tipos de movimientos
     void movimiento1();
     void movimiento2();
     void movimiento3();
@@ -51,6 +61,7 @@ public:
 signals:
 
 public slots:
+    //Funcion que actualiza el sprite y invoca a la funcion movimientox()
     void actualizar();
 
 };
