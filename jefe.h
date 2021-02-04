@@ -56,7 +56,7 @@ public:
     //varaibles de posicion de jugador para jefe 3
     float playerx = 1400,playery = 400;
 
-    //Variable que me indica
+    //Variable que me indica el tipo de movimiento
     int movement;
 
     //variables para la habilidad del toro(jefe)

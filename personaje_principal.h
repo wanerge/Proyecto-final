@@ -12,19 +12,29 @@ class personaje_principal : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
+    //constructor se crea el personaje con su barra de vida
     explicit personaje_principal(QString direccion, float ancho_, float alto_, float fila_, float columna_, int vida_, QObject *parent = nullptr);
     ~personaje_principal();
 
     //variable que me dice si estan precionando una tecla
     bool ispush = false;
 
-    int vida, max_columnas = 4;
-    float velocidad = 6, filas, columnas;
+    //variable para determinar la vida del objeto
+    int vida;
+     //velocidad define cada cuantos pixeles se desplaza el objeto
+    float velocidad = 6;
+    //variables para el funcionamiento del cambio de imagen
+    int max_columnas = 4;
+    float filas, columnas;
+    //dimensiones del objeto
     float ancho, alto;
 
+    /*variables para determinar la direccion de movimiento del objeto dependiendo de las teclas presionadas.
+    se almacena en letra1 la nueva tecla presionada y en letra2 la anterior tecla presionada si la hubo */
     char letra1;
     char letra2;
 
+    //define si la vida del objeto es mayor a 0 no cambia de estado
     QString estado = "vivo";
 
     QProgressBar *barra_personaje;
@@ -35,7 +45,7 @@ public:
     void left();
     void right();
 
-    //dibujo el recuadro que contedra al personaje
+    //funciones para el cambio de imagen del objeto
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
@@ -46,8 +56,7 @@ private:
 signals:
 
 public slots:
-    //Funcion para actualizar los frames del personaje
-    //Funciona con un timer
+    //funcion para el constante cambio de imagen del objeto
     void Actualizacion();
 
 };

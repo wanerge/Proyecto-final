@@ -44,7 +44,7 @@ public:
     void keyPressEvent(QKeyEvent *evento);
     void keyReleaseEvent(QKeyEvent *evento);
 
-    //funciones para el movimiento del disparo
+    //funciones para el movimiento del disparo del personaje
     void direccion_disparo(personaje_principal *person);
 
     //funciones para el movimiento del personaje
@@ -56,13 +56,16 @@ public:
     void colision_right(personaje_principal *person);
     void colision_spawn(personaje_principal *person);
     void key_press(personaje_principal *person, QTimer *time, QKeyEvent *evento);
-    void key_release(personaje_principal *person, QTimer *time, QKeyEvent *evento);    
+    void key_release(personaje_principal *person, QTimer *time, QKeyEvent *evento);
+    //funcion para actualizar el personaje cuando muere
     void reinicio_muerte(personaje_principal *person, life *vidas, QTimer *time);
 
     //carga el menu principal
     void menu();
 
+    //carga el primer mundo
     void cargar_mundo1();
+    //carga el segundo mundo
     void cargar_mundo2();
 
     void cargar_personajes(int persona, float pos_x, float pos_y, int vida_total, int num_vidas, int milisegundos);
@@ -80,7 +83,7 @@ private:
     int mundo;
     bool crear_personaje;
 
-    //se crea personaje principal
+    //variables para la creacion de personajes
     bool personaje_pri, personaje_seg;
     personaje_principal *personaje1, *personaje2;
     life *vidas1, *vidas2;
