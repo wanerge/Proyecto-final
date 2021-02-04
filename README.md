@@ -5,5 +5,6 @@ Mapas creados con Remeres Map Editor y piskel
 Por:  
 Wanerge Almanza Velasquez - 
 Miguel Angel Serna Montoya --
-Link Video: https://www.youtube.com/watch?v=EKmYUZaRcIs
+Link Trailer: https://youtu.be/Mv9imV5cxRw
+Link Video:https://youtu.be/nBa_gi0iISYs
 
