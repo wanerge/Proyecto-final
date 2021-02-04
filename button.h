@@ -6,6 +6,7 @@
 class Button : public QPushButton
 {
 public:
+    //constructor se crea un boton con caracteristicas ya predefinidas
     Button(QString text);
     ~Button();
 };

@@ -10,6 +10,7 @@
 class interfaz_pausa: public QGraphicsScene
 {
 public:
+    //constructor se crea la interfaz de pausa y dependiendo si es multijugador o no se carga el boton guardar
     interfaz_pausa(bool multijugador);
     ~interfaz_pausa();
 

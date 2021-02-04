@@ -9,7 +9,9 @@ public:
     zonas_especiales();
     ~zonas_especiales();
 
+    //carga los objetos predefinidos para el mundo 1(objetos-colisiones para determinados lugares)
     void mundo1();
+    //carga los objetos predefinidos para el mundo 2(objetos-colisiones para determinados lugares)
     void mundo2();
     QVector<colisiones *> *getContenedor() const;
 

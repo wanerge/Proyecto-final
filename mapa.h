@@ -10,6 +10,7 @@
 class mapa
 {
 public:
+    //constructor se crea y carga la imagen del mapa
     mapa(QString mundo_);
     ~mapa();
 
@@ -17,6 +18,7 @@ public:
     QGraphicsScene *getMundo() const;
     QVector<colisiones *> *getZonaspawn() const;
 
+    //carga los datos de un archivo de texto y los guarda en un contenedor tipo QVector<colisiones *> *
     void carga_Datos(QString nombre_archivo, QVector<colisiones *> *container);
 
     QVector<colisiones *> *getZona_blocked() const;

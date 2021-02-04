@@ -10,10 +10,13 @@
 class interfaz_inicio: public QGraphicsScene
 {
 public:
+    //constructor se crea la interfaz de inicio y carga el modo menu
     interfaz_inicio();
     ~interfaz_inicio();
 
+    //carga el modo menu de la interfaz
     void modo_menu();
+    //carga el modo dificultad de la interfaz
     void modo_dificultad();
 
     QWidget *getWid() const;
